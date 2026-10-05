@@ -148,3 +148,10 @@ External links
 * Reddit: [/r/Tuxemon](https://www.reddit.com/r/tuxemon)
 * YouTube: [Tuxemon](https://www.youtube.com/channel/UC6BJ6H7dB2Dpb8wzcYhDU3w)
 * Readthedocs: https://tuxemon.readthedocs.io/en/latest/
+
+## Chromatic Conversation Playground
+
+A separate Game Boy Color conversation playground and frame-by-frame screen
+verification gate are available in [chromatic_demo/VERIFY.md](chromatic_demo/VERIFY.md).
+The project-local `verify` skill builds an isolated ROM and drives its actual
+buttons across every declared screen state and input method.

@@ -1,0 +1,13 @@
+{
+  "frame": 7,
+  "action_id": 1,
+  "action_frame": 7,
+  "dark_pixels": 0,
+  "lcdc": 193,
+  "phase": 1,
+  "method": 1,
+  "area": 0,
+  "header_pixels_sha256": "befbca8731031b458d5a206ff23a2eb93bd8968000cad55eb1cdda3cc330c67a",
+  "reason": "all-white frame",
+  "screenshot": "failure-00001-0007.png"
+}

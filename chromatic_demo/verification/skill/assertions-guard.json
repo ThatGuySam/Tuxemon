@@ -1,0 +1,5 @@
+{
+  "exit_code": 1,
+  "disabled_assertions_rejected": true,
+  "stderr": "UserWarning: Using SDL2 binaries from pysdl2-dll 2.32.10\nTraceback (most recent call last):\n  File \"/Users/athena/Code/Tuxemon/tests/chromatic_demo/verify_screen_frames.py\", line 24, in <module>\n    raise RuntimeError(\"Screen verification requires enabled Python assertions; omit -O\")\nRuntimeError: Screen verification requires enabled Python assertions; omit -O\n"
+}
