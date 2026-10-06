@@ -1,0 +1,689 @@
+{
+  "status": "passed",
+  "failure": null,
+  "rom_sha256": "ef806f6a27c18cdf9da86562c6691612307691681f7a1d9ecb24953955b4282e",
+  "smoke": false,
+  "profile": "interfaces",
+  "interface_flows": [
+    {
+      "method_id": 0,
+      "method_name": "2 Intent composer",
+      "outgoing_exact": "Can we discuss this: Ask Earth tactics? I want a cautious plan.",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-0-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 1,
+          "context_revision": 2,
+          "draft_revision": 65,
+          "scenario": 0,
+          "method": 0,
+          "operation": 1,
+          "text": "Can we discuss this: Ask Earth tactics? I want a cautious plan.",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9864685535430908
+          ],
+          [
+            "safe_plan",
+            0.9516884088516235
+          ],
+          [
+            "rush_trial",
+            0.21218276023864746
+          ],
+          [
+            "type_correction",
+            0.46764466166496277
+          ],
+          [
+            "epilogue",
+            0.08660151064395905
+          ],
+          [
+            "prof_unknown",
+            0.4493323862552643
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 1,
+      "method_name": "1 Keyword chips",
+      "outgoing_exact": "ask earth tactics",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-1-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 2,
+          "context_revision": 4,
+          "draft_revision": 84,
+          "scenario": 0,
+          "method": 1,
+          "operation": 1,
+          "text": "ask earth tactics",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9890333414077759
+          ],
+          [
+            "safe_plan",
+            0.6374899744987488
+          ],
+          [
+            "rush_trial",
+            0.23180831968784332
+          ],
+          [
+            "type_correction",
+            0.4340802729129791
+          ],
+          [
+            "epilogue",
+            0.08813101053237915
+          ],
+          [
+            "prof_unknown",
+            0.5299683213233948
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 2,
+      "method_name": "3 Initials shorthand",
+      "outgoing_exact": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-2-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 3,
+          "context_revision": 6,
+          "draft_revision": 98,
+          "scenario": 0,
+          "method": 2,
+          "operation": 1,
+          "text": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9831202030181885
+          ],
+          [
+            "safe_plan",
+            0.8582420349121094
+          ],
+          [
+            "rush_trial",
+            0.14319801330566406
+          ],
+          [
+            "type_correction",
+            0.4870760440826416
+          ],
+          [
+            "epilogue",
+            0.14191444218158722
+          ],
+          [
+            "prof_unknown",
+            0.5174819231033325
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 3,
+      "method_name": "4 Predictive grid",
+      "outgoing_exact": "help earth tactics",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-3-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 4,
+          "context_revision": 8,
+          "draft_revision": 118,
+          "scenario": 0,
+          "method": 3,
+          "operation": 1,
+          "text": "help earth tactics",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9802570939064026
+          ],
+          [
+            "safe_plan",
+            0.6086987853050232
+          ],
+          [
+            "rush_trial",
+            0.10477569699287415
+          ],
+          [
+            "type_correction",
+            0.4806165397167206
+          ],
+          [
+            "epilogue",
+            0.10895243287086487
+          ],
+          [
+            "prof_unknown",
+            0.5261633992195129
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 4,
+      "method_name": "5 Grouped alphabet",
+      "outgoing_exact": "earth tactics",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-4-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 5,
+          "context_revision": 10,
+          "draft_revision": 133,
+          "scenario": 0,
+          "method": 4,
+          "operation": 1,
+          "text": "earth tactics",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9205818772315979
+          ],
+          [
+            "safe_plan",
+            0.6223394274711609
+          ],
+          [
+            "rush_trial",
+            0.2733549475669861
+          ],
+          [
+            "type_correction",
+            0.5034852623939514
+          ],
+          [
+            "epilogue",
+            0.11746624112129211
+          ],
+          [
+            "prof_unknown",
+            0.617357611656189
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 5,
+      "method_name": "6 Custom EdgeWrite",
+      "outgoing_exact": "earth tactics",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-5-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 6,
+          "context_revision": 12,
+          "draft_revision": 148,
+          "scenario": 0,
+          "method": 5,
+          "operation": 1,
+          "text": "earth tactics",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9205818772315979
+          ],
+          [
+            "safe_plan",
+            0.6223394274711609
+          ],
+          [
+            "rush_trial",
+            0.2733549475669861
+          ],
+          [
+            "type_correction",
+            0.5034852623939514
+          ],
+          [
+            "epilogue",
+            0.11746624112129211
+          ],
+          [
+            "prof_unknown",
+            0.617357611656189
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 6,
+      "method_name": "7 Dasher inspired",
+      "outgoing_exact": "earth tactics",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-6-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 7,
+          "context_revision": 14,
+          "draft_revision": 163,
+          "scenario": 0,
+          "method": 6,
+          "operation": 1,
+          "text": "earth tactics",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9205818772315979
+          ],
+          [
+            "safe_plan",
+            0.6223394274711609
+          ],
+          [
+            "rush_trial",
+            0.2733549475669861
+          ],
+          [
+            "type_correction",
+            0.5034852623939514
+          ],
+          [
+            "epilogue",
+            0.11746624112129211
+          ],
+          [
+            "prof_unknown",
+            0.617357611656189
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 7,
+      "method_name": "8 Radial groups",
+      "outgoing_exact": "earth tactics",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-7-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 8,
+          "context_revision": 16,
+          "draft_revision": 178,
+          "scenario": 0,
+          "method": 7,
+          "operation": 1,
+          "text": "earth tactics",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9205818772315979
+          ],
+          [
+            "safe_plan",
+            0.6223394274711609
+          ],
+          [
+            "rush_trial",
+            0.2733549475669861
+          ],
+          [
+            "type_correction",
+            0.5034852623939514
+          ],
+          [
+            "epilogue",
+            0.11746624112129211
+          ],
+          [
+            "prof_unknown",
+            0.617357611656189
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    },
+    {
+      "method_id": 8,
+      "method_name": "9 Paired host",
+      "outgoing_exact": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+      "explicit_send_count": 1,
+      "meaning_corrected": false,
+      "meaning_id": 0,
+      "quest_flags_after": 32,
+      "inventory_after": 3,
+      "reply_source": "authored fictional test-world response",
+      "reply_png": "method-8-authored-reply.png",
+      "host_receipt": {
+        "turn": {
+          "sequence": 10,
+          "context_revision": 18,
+          "draft_revision": 181,
+          "scenario": 0,
+          "method": 8,
+          "operation": 1,
+          "text": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+          "session_nonce": 3218580840
+        },
+        "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+        "intent": 0,
+        "source": 1,
+        "error": false,
+        "scores": [
+          [
+            "earth_plan",
+            0.9831202030181885
+          ],
+          [
+            "safe_plan",
+            0.8582420349121094
+          ],
+          [
+            "rush_trial",
+            0.14319801330566406
+          ],
+          [
+            "type_correction",
+            0.4870760440826416
+          ],
+          [
+            "epilogue",
+            0.14191444218158722
+          ],
+          [
+            "prof_unknown",
+            0.5174819231033325
+          ]
+        ],
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      }
+    }
+  ],
+  "picker_model": "/Users/athena/Code/Tuxemon/venv/chromatic-picker-model",
+  "bridge_dependency": {
+    "path": "/Users/athena/Code/Tuxemon/chromatic_demo/playground_bridge.py",
+    "sha256": "2f995639ef7ae6a47aba015a5d509edad18e1d5ab2af0c2c8d7bdb5393ec39a8"
+  },
+  "coverage_enforced": true,
+  "observed_phases": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "observed_methods": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "observed_areas": [
+    0
+  ],
+  "observed_paths": [
+    "interface.0.draft",
+    "interface.0.meaning",
+    "interface.0.preview",
+    "interface.0.reply",
+    "interface.0.send",
+    "interface.1.draft",
+    "interface.1.meaning",
+    "interface.1.preview",
+    "interface.1.reply",
+    "interface.1.send",
+    "interface.2.draft",
+    "interface.2.meaning",
+    "interface.2.preview",
+    "interface.2.reply",
+    "interface.2.send",
+    "interface.3.draft",
+    "interface.3.meaning",
+    "interface.3.preview",
+    "interface.3.reply",
+    "interface.3.send",
+    "interface.4.draft",
+    "interface.4.meaning",
+    "interface.4.preview",
+    "interface.4.reply",
+    "interface.4.send",
+    "interface.5.draft",
+    "interface.5.meaning",
+    "interface.5.preview",
+    "interface.5.reply",
+    "interface.5.send",
+    "interface.6.draft",
+    "interface.6.meaning",
+    "interface.6.preview",
+    "interface.6.reply",
+    "interface.6.send",
+    "interface.7.draft",
+    "interface.7.meaning",
+    "interface.7.preview",
+    "interface.7.reply",
+    "interface.7.send",
+    "interface.8.draft",
+    "interface.8.meaning",
+    "interface.8.preview",
+    "interface.8.reply",
+    "interface.8.send"
+  ],
+  "action_count": 655,
+  "checked_frame_count": 13083,
+  "declared_phase_ids": {
+    "WORLD": 0,
+    "MENU": 1,
+    "EDITOR": 2,
+    "PREVIEW": 3,
+    "WAIT": 4,
+    "MEANING": 5,
+    "REPLY": 6,
+    "JOURNAL": 7
+  },
+  "declared_method_names": [
+    "2 Intent composer",
+    "1 Keyword chips",
+    "3 Initials shorthand",
+    "4 Predictive grid",
+    "5 Grouped alphabet",
+    "6 Custom EdgeWrite",
+    "7 Dasher inspired",
+    "8 Radial groups",
+    "9 Paired host"
+  ],
+  "required_phases": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "required_methods": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "required_areas": [
+    0
+  ],
+  "required_paths": [
+    "interface.0.draft",
+    "interface.0.meaning",
+    "interface.0.preview",
+    "interface.0.reply",
+    "interface.0.send",
+    "interface.1.draft",
+    "interface.1.meaning",
+    "interface.1.preview",
+    "interface.1.reply",
+    "interface.1.send",
+    "interface.2.draft",
+    "interface.2.meaning",
+    "interface.2.preview",
+    "interface.2.reply",
+    "interface.2.send",
+    "interface.3.draft",
+    "interface.3.meaning",
+    "interface.3.preview",
+    "interface.3.reply",
+    "interface.3.send",
+    "interface.4.draft",
+    "interface.4.meaning",
+    "interface.4.preview",
+    "interface.4.reply",
+    "interface.4.send",
+    "interface.5.draft",
+    "interface.5.meaning",
+    "interface.5.preview",
+    "interface.5.reply",
+    "interface.5.send",
+    "interface.6.draft",
+    "interface.6.meaning",
+    "interface.6.preview",
+    "interface.6.reply",
+    "interface.6.send",
+    "interface.7.draft",
+    "interface.7.meaning",
+    "interface.7.preview",
+    "interface.7.reply",
+    "interface.7.send",
+    "interface.8.draft",
+    "interface.8.meaning",
+    "interface.8.preview",
+    "interface.8.reply",
+    "interface.8.send"
+  ],
+  "missing_paths": [],
+  "cleanup": {
+    "emulator_stopped_save_false": true,
+    "owned_http_server_closed": true
+  },
+  "proof_scope": "Concrete enumerated emulator paths, not every possible input history or physical LCD behavior. Boot initialization excluded. No physical device/browser/SDL session used.",
+  "host_scope": "Actual owned Controller and loopback HTTP; live pinned picker receipts recorded"
+}

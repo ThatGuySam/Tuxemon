@@ -19,6 +19,7 @@ Preconditions: fresh bundle and passing doctor; host boundaries in the screen su
 - Run `.agents/skills/verify/scripts/control.py drive --run "$VERIFY_RUN" --feature screens` for all input-mode rendering and typed/deleted text.
 - Run `.agents/skills/verify/scripts/control.py drive --run "$VERIFY_RUN" --feature world` for full draft preservation, limit, explicit commit, cancellation, and guarded effects.
 - Require observed draft bytes to equal the literal entered text, stale text cells to become blank, and preview to leave Send count unchanged.
+- Run `.agents/skills/verify/scripts/control.py drive --run "$VERIFY_RUN" --feature interfaces` with the pinned picker environment for complete conversations in all nine methods, including actual paired HTTP. Require one explicit Send and confirmed authored reply per method, with preserved guards before confirmation.
 - Use the separately mapped live path to establish real paired/model behavior. Synthetic rendering fixtures cannot replace that proof.
 
 ## Gotchas

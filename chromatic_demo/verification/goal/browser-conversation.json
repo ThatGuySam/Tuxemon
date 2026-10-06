@@ -1,0 +1,137 @@
+{
+  "status": "passed",
+  "rom_sha256": "ef806f6a27c18cdf9da86562c6691612307691681f7a1d9ecb24953955b4282e",
+  "browser_input_expected": true,
+  "literal_text": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+  "source": 3,
+  "explicit_send_count": 1,
+  "flags_after_confirmation": 32,
+  "inventory": 3,
+  "real_picker_result": {
+    "turn": {
+      "sequence": 2,
+      "context_revision": 1,
+      "draft_revision": 2,
+      "scenario": 0,
+      "method": 8,
+      "operation": 1,
+      "text": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+      "session_nonce": 386024916
+    },
+    "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+    "intent": 0,
+    "source": 1,
+    "error": false,
+    "scores": [
+      [
+        "earth_plan",
+        0.9831202030181885
+      ],
+      [
+        "safe_plan",
+        0.8582420349121094
+      ],
+      [
+        "rush_trial",
+        0.14319801330566406
+      ],
+      [
+        "type_correction",
+        0.4870760440826416
+      ],
+      [
+        "epilogue",
+        0.14191444218158722
+      ],
+      [
+        "prof_unknown",
+        0.5174819231033325
+      ]
+    ],
+    "model_id": "knowledgator/gliclass-edge-v3.0",
+    "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+  },
+  "actions": [
+    {
+      "key": "up",
+      "phase": 0,
+      "method": 1
+    },
+    {
+      "key": "a",
+      "phase": 6,
+      "method": 1
+    },
+    {
+      "key": "a",
+      "phase": 2,
+      "method": 1
+    },
+    {
+      "key": "start",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "down",
+      "phase": 1,
+      "method": 1
+    },
+    {
+      "key": "a",
+      "phase": 2,
+      "method": 8
+    },
+    {
+      "key": "a",
+      "phase": 4,
+      "method": 8
+    },
+    {
+      "key": "a",
+      "phase": 4,
+      "method": 8
+    },
+    {
+      "key": "a",
+      "phase": 6,
+      "method": 8
+    }
+  ],
+  "user_sessions_touched": false
+}

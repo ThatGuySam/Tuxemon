@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 from collections import deque
+from dataclasses import asdict
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -22,7 +23,7 @@ from pyboy import PyBoy
 
 if not __debug__:
     raise RuntimeError(
-        "Screen verification requires enabled Python assertions; omit -O"
+        "Verification requires enabled Python assertions; omit -O"
     )
 
 
@@ -31,6 +32,8 @@ def verify(
     output_dir: Path | None = None,
     smoke: bool = False,
     bridge_path: Path | None = None,
+    interfaces: bool = False,
+    picker_model: Path | None = None,
 ) -> None:
     symbols = {}
     for line in (build / "playground.noi").read_text().splitlines():
@@ -169,7 +172,11 @@ def verify(
         p.tick(1)
         if controller_enabled:
             controller.tick()
-            time.sleep(0)
+            time.sleep(
+                0.016
+                if interfaces and picker_model and state("phase") == 4
+                else 0
+            )
         total_frames += 1
         array = np.asarray(p.screen.image)
         dark = int(np.any(array[:, :, :3] < 100, axis=2).sum())
@@ -262,6 +269,13 @@ def verify(
                 state("ui_id") == 3 or state("spelling")
             ):
                 for column in range(0, 160, 16):
+                    label_mask[56:80, column : column + 8] = False
+            elif (
+                state("phase") == 2
+                and state("ui_id") == 7
+                and state("editor_step")
+            ):
+                for column in range(8, 128, 32):
                     label_mask[56:80, column : column + 8] = False
         traces.append(action)
         p.button_press(key)
@@ -454,7 +468,322 @@ def verify(
     class SmokeComplete(Exception):
         pass
 
+    interface_results = []
+
+    def interface_flows():
+        nonlocal \
+            controller, \
+            controller_enabled, \
+            server, \
+            server_thread, \
+            bridge_dependency, \
+            required_paths
+        path = (
+            bridge_path
+            or Path(__file__).resolve().parents[2]
+            / "chromatic_demo/playground_bridge.py"
+        )
+        bridge_dependency = {
+            "path": str(path.resolve()),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+        spec = importlib.util.spec_from_file_location(
+            "owned_interface_bridge", path
+        )
+        bridge = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = bridge
+        spec.loader.exec_module(bridge)
+        picker = None
+        if picker_model:
+            sys.path.insert(0, str(path.resolve().parents[1]))
+            from chromatic_demo.npc_picker import GLiClassPicker
+
+            picker = GLiClassPicker.from_local_model(picker_model)
+        controller = bridge.Controller(p, bridge.Broker(content, picker))
+        controller_enabled = True
+        secret = secrets.token_urlsafe(24)
+        server = bridge.paired_server(controller, secret)
+        server_thread = threading.Thread(
+            target=server.serve_forever, daemon=True
+        )
+        server_thread.start()
+        idle(3, "interface-host-handshake")
+        declaration = next(
+            line
+            for line in compiled_source.splitlines()
+            if "keyboard_sets[4]" in line
+        )
+        sets = [
+            ast.literal_eval(value)
+            for value in re.findall(r'"(?:\\.|[^"\\])*"', declaration)
+        ]
+        alphabet = ast.literal_eval(
+            re.search(
+                r'alphabet\[\]\s*=\s*("(?:\\.|[^"\\])*")', compiled_source
+            ).group(1)
+        )
+        dasher = ast.literal_eval(
+            re.search(
+                r'dasher_order\[\]\s*=\s*("(?:\\.|[^"\\])*")', compiled_source
+            ).group(1)
+        )
+        assets = (build / "playground_assets.h").read_text()
+        chip_declaration = re.search(
+            r"keyword_chips\[5\]\[7\]\s*=\s*\{(.*?)\};", assets, re.DOTALL
+        ).group(1)
+        chips = [
+            ast.literal_eval(value)
+            for value in re.findall(r'"(?:\\.|[^"\\])*"', chip_declaration)
+        ][:7]
+        keyboard_page = 0
+
+        def literal(message):
+            nonlocal keyboard_page
+            before = text()
+            for char in message:
+                page, index = next(
+                    (page, chars.index(char))
+                    for page, chars in enumerate(sets)
+                    if char in chars
+                )
+                while keyboard_page != page:
+                    focus(31)
+                    event("a", "interface-keyboard-page", True)
+                    keyboard_page = (keyboard_page + 1) % 4
+                focus(index)
+                event("a", "interface-literal-character", True)
+            assert text() == before + message
+
+        expected = content["npcs"][0]["replies"][0]["utterance"]
+        required_paths = {
+            f"interface.{method}.{stage}"
+            for method in range(method_count)
+            for stage in ("draft", "preview", "send", "meaning", "reply")
+        }
+        for method in range(method_count):
+            assert state("phase") == 0
+            event("start", f"method-{method}-reset-menu")
+            while state("cursor") != 10:
+                event("down", stable_header=True)
+            event("a", f"method-{method}-reset")
+            assert (
+                state("quest_flags") == 0
+                and state("inventory") == 3
+                and state("committed_count") == 0
+            )
+            walk_to(0)
+            event("a", f"method-{method}-npc-opening")
+            while state("phase") == 6:
+                event("a", f"method-{method}-opening-next")
+            mode(method)
+            assert text() == "" and state("npc_id") == 0
+            if method == 0:
+                event("a", "intent-goal", True)
+                event("a", "intent-topic", True)
+                event("down", "intent-cautious", True)
+                event("a", "intent-stance", True)
+            elif method == 1:
+                for word in ("ask", "earth", "tactics"):
+                    focus(chips.index(word))
+                    event("a", "keyword-" + word, True)
+                assert text() == "ask earth tactics"
+            elif method == 2:
+                focus(8)
+                event("a", "initials-spell")
+                literal("".join(word[0].lower() for word in expected.split()))
+                event("b", "initials-expansions")
+                focus(0)
+                event("a", "initials-expanded", True)
+                assert text() == expected
+            elif method == 3:
+                literal("h")
+                focus(30)
+                event("a", "predicted-help", True)
+                assert text() == "help"
+                literal(" earth tactics")
+            elif method == 4:
+                for char in "earth tactics":
+                    index = alphabet.index(char)
+                    focus(index // 5)
+                    event("a", "alphabet-group", True)
+                    focus(index % 5)
+                    event("a", "group-letter", True)
+                assert text() == "earth tactics"
+            elif method == 5:
+                for char in "earth tactics":
+                    index = alphabet.index(char)
+                    length = 1 if index < 4 else 2 if index < 20 else 3
+                    value = (
+                        index
+                        if index < 4
+                        else index - 4
+                        if index < 20
+                        else index - 20
+                    )
+                    strokes = []
+                    for _ in range(length):
+                        strokes.append(
+                            ("up", "right", "down", "left")[value % 4]
+                        )
+                        value //= 4
+                    for direction in reversed(strokes):
+                        event(direction, "gesture-corner", True)
+                    event("a", "gesture-letter", True)
+                assert text() == "earth tactics"
+            elif method == 6:
+                for char in "earth tactics":
+                    target = dasher.index(char)
+                    start, end = 0, len(dasher)
+                    while True:
+                        size = (end - start + 3) // 4
+                        branch = (target - start) // size
+                        focus(branch)
+                        event("a", "dasher-branch", True)
+                        if size == 1:
+                            break
+                        start, end = (
+                            start + branch * size,
+                            min(start + (branch + 1) * size, end),
+                        )
+                assert text() == "earth tactics"
+            elif method == 7:
+                for char in "earth tactics":
+                    index = alphabet.index(char)
+                    event(
+                        ("up", "right", "down", "left")[index // 7],
+                        "radial-petal",
+                        True,
+                    )
+                    event("a", "radial-open", True)
+                    focus(index % 7)
+                    event("a", "radial-letter", True)
+                assert text() == "earth tactics"
+            elif method == 8:
+                focus(0)
+                event("a", "paired-actual-receive")
+                assert state("phase") == 4
+                request = Request(
+                    f"http://127.0.0.1:{server.server_port}/v1/input",
+                    data=json.dumps({"text": expected}).encode(),
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + secret,
+                    },
+                )
+                with urlopen(request, timeout=5) as response:
+                    receipt = json.loads(response.read())
+                    assert (
+                        response.status == 202
+                        and receipt["committed"] is False
+                    )
+                idle(20, "paired-actual-delivery")
+                assert state("phase") == 3 and text() == expected
+                event("b", "paired-review-edit")
+            else:
+                raise AssertionError(
+                    "New method lacks a complete conversation-flow recipe"
+                )
+            outgoing = text()
+            assert (
+                outgoing
+                and state("quest_flags") == 0
+                and state("inventory") == 3
+                and state("committed_count") == 0
+            )
+            mark(f"interface.{method}.draft")
+            if method == 5:
+                event("b", "gesture-actions")
+            if method == 7:
+                event("b", "radial-actions")
+            counts = {0: 3, 1: 7, 2: 6, 3: 32, 4: 6, 5: 1, 6: 4, 7: 4, 8: 1}
+            focus(counts[method] + 1)
+            event("a", f"method-{method}-exact-preview")
+            assert (
+                state("phase") == 3
+                and text() == outgoing
+                and state("quest_flags") == 0
+                and state("inventory") == 3
+                and state("committed_count") == 0
+            )
+            mark(f"interface.{method}.preview")
+            event("a", f"method-{method}-explicit-send")
+            for _ in range(900):
+                if state("phase") != 4:
+                    break
+                idle(1, "classifier-frame")
+            assert (
+                state("phase") == 5
+                and state("committed_count") == 1
+                and state("quest_flags") == 0
+                and state("inventory") == 3
+            )
+            assert (
+                bytes(
+                    p.memory[symbols["_committed_text"] + index]
+                    for index in range(len(outgoing))
+                ).decode("ascii")
+                == outgoing
+            )
+            mark(f"interface.{method}.send")
+            receipt = None
+            if (
+                controller.last_result
+                and controller.last_result.turn.sequence
+                == state("request_sequence")
+            ):
+                receipt = asdict(controller.last_result)
+            if picker_model:
+                assert receipt and receipt["model_id"], (
+                    "Requested live picker did not produce a receipt"
+                )
+            corrected = state("outcome_id") != 0
+            if corrected:
+                event("down", "correct-meaning-choice", True)
+                event("a", "correct-meaning-list")
+                event("a", "select-earth-plan")
+            assert (
+                state("phase") == 5
+                and state("outcome_id") == 0
+                and state("quest_flags") == 0
+                and state("inventory") == 3
+            )
+            mark(f"interface.{method}.meaning")
+            event("a", f"method-{method}-confirm-meaning")
+            assert (
+                state("phase") == 6
+                and state("quest_flags") == 32
+                and state("inventory") == 3
+                and state("committed_count") == 1
+            )
+            reply_png = image(f"method-{method}-authored-reply.png")
+            while state("phase") == 6:
+                event("a", f"method-{method}-reply-next")
+            assert state("phase") == 0
+            mark(f"interface.{method}.reply")
+            interface_results.append(
+                {
+                    "method_id": method,
+                    "method_name": method_names[method],
+                    "outgoing_exact": outgoing,
+                    "explicit_send_count": 1,
+                    "meaning_corrected": corrected,
+                    "meaning_id": 0,
+                    "quest_flags_after": 32,
+                    "inventory_after": 3,
+                    "reply_source": "authored fictional test-world response",
+                    "reply_png": reply_png,
+                    "host_receipt": receipt,
+                }
+            )
+        assert {item["method_id"] for item in interface_results} == set(
+            range(method_count)
+        ) and not (required_paths - coverage_paths)
+
     try:
+        if interfaces:
+            interface_flows()
+            status = "passed"
+            raise SmokeComplete
         if smoke:
             event("start", "smoke-open-menu")
             assert state("phase") == 1
@@ -705,6 +1034,12 @@ def verify(
                     raise ValueError(
                         "Explicit verification-boundary error fixture"
                     )
+                if turn.operation == bridge.CLASSIFY:
+                    return bridge.Result(
+                        turn,
+                        "Authored verification response; choose a topic.",
+                        source=bridge.AUTHORED,
+                    )
                 return self.real.run(turn)
 
             def configure(self, error=False):
@@ -881,6 +1216,13 @@ def verify(
             "failure": failure,
             "rom_sha256": digest,
             "smoke": smoke,
+            "profile": "interfaces"
+            if interfaces
+            else "smoke"
+            if smoke
+            else "screens",
+            "interface_flows": interface_results,
+            "picker_model": str(picker_model) if picker_model else None,
             "bridge_dependency": bridge_dependency,
             "coverage_enforced": not smoke,
             "observed_phases": sorted(coverage_phases),
@@ -891,11 +1233,28 @@ def verify(
             "checked_frame_count": total_frames,
             "declared_phase_ids": phase_ids,
             "declared_method_names": method_names,
-            "required_phases": list(phase_ids.values())
+            "required_phases": [
+                phase_ids[name]
+                for name in (
+                    "WORLD",
+                    "MENU",
+                    "EDITOR",
+                    "PREVIEW",
+                    "WAIT",
+                    "MEANING",
+                    "REPLY",
+                )
+            ]
+            if interfaces
+            else list(phase_ids.values())
             if not smoke
             else [phase_ids["WORLD"], phase_ids["MENU"]],
             "required_methods": list(range(method_count)) if not smoke else [],
-            "required_areas": list(range(area_count)) if not smoke else [],
+            "required_areas": [0]
+            if interfaces
+            else list(range(area_count))
+            if not smoke
+            else [],
             "required_paths": sorted(required_paths)
             if not smoke
             else ["menu.cursor"],
@@ -909,7 +1268,11 @@ def verify(
             "proof_scope": "Concrete enumerated emulator paths, not every possible input history or physical LCD behavior. Boot initialization excluded. No physical device/browser/SDL session used.",
             "host_scope": "Not exercised in menu-only smoke"
             if smoke
-            else "Actual owned Controller and real loopback HTTP transfer. Authored Broker responses with explicitly gated delay/error fixtures; no live-model inference or latency claim.",
+            else "Actual owned Controller and loopback HTTP; live pinned picker receipts recorded"
+            if interfaces and picker_model
+            else "Actual owned Controller and real loopback HTTP; authored fallback, no model inference claimed"
+            if interfaces
+            else "Actual owned Controller and real loopback HTTP transfer. Explicit authored classification READY fixture and gated delay/error fixtures; no live-model inference or latency claim.",
         }
         (directory / "coverage.json").write_text(
             json.dumps(report, indent=2) + "\n"

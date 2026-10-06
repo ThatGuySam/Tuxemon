@@ -36,6 +36,12 @@ Use this first when a path behaves unexpectedly. It boots an independent emulato
 
 `screens` is the required screen-regression gate. It exercises enumerated ROM phases and input modes, asserts every driven frame, and fails on missing required coverage. `world` adds movement, full quest/item guards, and actual linker-layout checks. Read each mapped feature for the asserted entry points. A path not visited is not verified through another path.
 
+The complete conversation-flow gate uses the installed picker environment and model snapshot. It drives each of the nine actual entry mechanisms through exact Preview, explicit Send, Meaning, and an authored NPC reply, with no item or quest effects before confirmation.
+
+```sh
+.agents/skills/verify/scripts/control.py drive --run "$VERIFY_RUN" --feature interfaces
+```
+
 The optional live companion path uses the separate installed classifier environment and pinned local snapshot. It calls local Ollama, never ChatGPT account tokens or a billed API. It reads the selected run's ROM and writes its own evidence.
 
 ```sh

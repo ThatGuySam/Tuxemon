@@ -145,7 +145,9 @@ def main():
     p = sub.add_parser("drive")
     p.add_argument("--run", required=True)
     p.add_argument(
-        "--feature", choices=("screens", "world", "live"), default="screens"
+        "--feature",
+        choices=("screens", "world", "live", "interfaces"),
+        default="screens",
     )
     args = parser.parse_args()
     if args.action == "launch":
@@ -213,6 +215,35 @@ def main():
             if report["missing_paths"] or report["checked_frame_count"] <= 0:
                 raise AssertionError(
                     "Screen gate omitted required paths or frame checks"
+                )
+        elif args.feature == "interfaces":
+            execute(
+                run,
+                "interfaces",
+                [
+                    PICKER_PYTHON,
+                    ROOT / "tests/chromatic_demo/verify_interface_flows.py",
+                    run / "rom",
+                    "--output-dir",
+                    run / "interfaces",
+                    "--picker-model",
+                    ROOT / "venv/chromatic-picker-model",
+                ],
+            )
+            report = json.loads((run / "interfaces/coverage.json").read_text())
+            flows = report["interface_flows"]
+            if report["status"] != "passed" or {
+                flow["method_id"] for flow in flows
+            } != set(report["required_methods"]):
+                raise AssertionError("Incomplete conversation interface flows")
+            if any(
+                flow["explicit_send_count"] != 1
+                or flow["quest_flags_after"] != 32
+                or flow["inventory_after"] != 3
+                for flow in flows
+            ):
+                raise AssertionError(
+                    "Conversation confirmation effects were not verified"
                 )
         elif args.feature == "world":
             for label, script in [
