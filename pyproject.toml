@@ -54,7 +54,7 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["tuxemon*"]
+include = ["tuxemon*", "chromatic_demo"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}

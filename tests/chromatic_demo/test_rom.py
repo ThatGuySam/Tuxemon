@@ -2,6 +2,7 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -14,7 +15,7 @@ from chromatic_demo.rom import (
     sha256,
 )
 
-REPO = Path("/Users/athena/Code/Tuxemon")
+REPO = Path(__file__).resolve().parents[2]
 
 
 class RomTests(unittest.TestCase):
@@ -58,18 +59,28 @@ class RomTests(unittest.TestCase):
         self.assertGreater(len(set(encoded)), 1)
 
     def test_supplied_text_cannot_claim_authored_or_generated_origin(self):
-        """Imported real authored text remains labeled as caller supplied."""
+        """Check provenance at a synthetic external-compiler boundary."""
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "imported-authored-translations.json"
             replies = authored_dialogue(REPO)
             source.write_text(json.dumps(replies))
+            compiler = root / "synthetic-compiler-boundary"
+            compiler.write_text(
+                "#!" + sys.executable + "\n"
+                "from pathlib import Path\n"
+                "import sys\n"
+                "Path(sys.argv[sys.argv.index('-o') + 1]).write_bytes("
+                "b'SYNTHETIC UNIT FIXTURE: NOT A PLAYABLE ROM')\n"
+            )
+            compiler.chmod(0o700)
             generate(
                 REPO,
                 root / "build",
                 replies,
                 "chatgpt",
                 "TEST-ONLY-MODEL",
+                compiler=compiler,
                 snapshot_source=source,
             )
             provenance = json.loads(

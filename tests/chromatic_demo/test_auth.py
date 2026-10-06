@@ -76,7 +76,16 @@ def test_pkce_callback_and_no_token_in_printed_url():
 
 
 @pytest.mark.parametrize(
-    "mutation", [None, "iss", "aud", "exp", "nonce", "sub", "signature"]
+    "mutation",
+    [
+        pytest.param(None, id="valid"),
+        pytest.param("iss", id="wrong-issuer"),
+        pytest.param("aud", id="wrong-audience"),
+        pytest.param("exp", id="expired"),
+        pytest.param("nonce", id="wrong-nonce"),
+        pytest.param("sub", id="missing-subject"),
+        pytest.param("signature", id="invalid-signature"),
+    ],
 )
 def test_real_rsa_signature_and_oidc_validation(mutation):
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)

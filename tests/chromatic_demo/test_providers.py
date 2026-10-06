@@ -58,7 +58,14 @@ def test_sse_multiline_size_limits_and_ascii():
     assert all(32 <= ord(char) <= 126 for char in result)
 
 
-@pytest.mark.parametrize("control", ["\x00", "\x1b", "\x7f"])
+@pytest.mark.parametrize(
+    "control",
+    [
+        pytest.param("\x00", id="null"),
+        pytest.param("\x1b", id="escape"),
+        pytest.param("\x7f", id="delete"),
+    ],
+)
 def test_synthetic_control_bytes_become_word_boundaries(control):
     result = display_text("SYNTHETIC" + control + "dialogue")
     assert result == "SYNTHETIC dialogue"

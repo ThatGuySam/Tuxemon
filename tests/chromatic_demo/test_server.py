@@ -112,18 +112,37 @@ def test_authorization_rejected_before_body_read(run_server):
 @pytest.mark.parametrize(
     "value",
     [
-        b"invalid JSON",
-        b'{"request_id":"SYNTHETIC","request_id":"DUPLICATE","intent":"greet"}',
-        [],
-        {},
-        {"request_id": "SYNTHETIC", "intent": "unknown"},
-        {"request_id": "SYNTHETIC", "intent": "greet", "context": "injection"},
-        {"request_id": "x" * 65, "intent": "greet"},
-        {"request_id": "\u00e9", "intent": "greet"},
-        {"request_id": "", "intent": "greet"},
-        {"request_id": "\x00", "intent": "greet"},
-        {"request_id": 1, "intent": "greet"},
-        {"request_id": "SYNTHETIC", "intent": []},
+        pytest.param(b"invalid JSON", id="malformed-json"),
+        pytest.param(
+            b'{"request_id":"SYNTHETIC","request_id":"DUPLICATE","intent":"greet"}',
+            id="duplicate-request-id",
+        ),
+        pytest.param([], id="array-body"),
+        pytest.param({}, id="missing-fields"),
+        pytest.param(
+            {"request_id": "SYNTHETIC", "intent": "unknown"},
+            id="unknown-intent",
+        ),
+        pytest.param(
+            {
+                "request_id": "SYNTHETIC",
+                "intent": "greet",
+                "context": "injection",
+            },
+            id="extra-context",
+        ),
+        pytest.param(
+            {"request_id": "x" * 65, "intent": "greet"}, id="overlong-id"
+        ),
+        pytest.param(
+            {"request_id": "\u00e9", "intent": "greet"}, id="nonascii-id"
+        ),
+        pytest.param({"request_id": "", "intent": "greet"}, id="empty-id"),
+        pytest.param({"request_id": "\x00", "intent": "greet"}, id="null-id"),
+        pytest.param({"request_id": 1, "intent": "greet"}, id="nonstring-id"),
+        pytest.param(
+            {"request_id": "SYNTHETIC", "intent": []}, id="nonstr-intent"
+        ),
     ],
 )
 def test_invalid_request_and_schema(run_server, value):
@@ -136,7 +155,16 @@ def test_paths_and_oversized_body(run_server):
     assert post(server, b"x" * (MAX_BODY + 1))[0] == 413
 
 
-@pytest.mark.parametrize("length", [None, "-1", "+2", "2.0", "nan"])
+@pytest.mark.parametrize(
+    "length",
+    [
+        pytest.param(None, id="missing"),
+        pytest.param("-1", id="negative"),
+        pytest.param("+2", id="signed"),
+        pytest.param("2.0", id="fractional"),
+        pytest.param("nan", id="nonnumeric"),
+    ],
+)
 def test_missing_or_weird_lengths(run_server, length):
     server = run_server()
     connection = http.client.HTTPConnection(
@@ -153,7 +181,13 @@ def test_missing_or_weird_lengths(run_server, length):
     connection.close()
 
 
-@pytest.mark.parametrize("header", ["Transfer-Encoding", "Content-Length"])
+@pytest.mark.parametrize(
+    "header",
+    [
+        pytest.param("Transfer-Encoding", id="chunked-transfer"),
+        pytest.param("Content-Length", id="duplicate-length"),
+    ],
+)
 def test_chunked_and_duplicate_content_lengths_rejected(run_server, header):
     server = run_server()
     connection = http.client.HTTPConnection(
