@@ -1,0 +1,23 @@
+behaviors:
+  consumable: false
+  holdable: true
+category: none
+effects: []
+immunity_to_status:
+- noddingoff
+modifiers: []
+slug: custom_aid_kit
+sort: utility
+sound:
+  sfx: null
+  volume: 0.0
+sprite: gfx/items/flute.png
+usable_in:
+- ''
+use_failure: generic_failure
+use_item: combat_used_x
+use_success: generic_success
+visuals:
+  animation: null
+  flip_axes: ''
+  loop: 0

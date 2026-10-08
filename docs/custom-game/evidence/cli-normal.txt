@@ -1,0 +1,7 @@
+/workspace/work/tuxemon-custom/tuxemon/prepare.py:76: Warning: no fast renderer available
+  screen = pg.display.set_mode(CONFIG.resolution, flags, vsync=CONFIG.vsync)
+pygame-ce 2.5.7 (SDL 2.32.10, Python 3.12.14)
+Git Hash: 6d3fb1e7b
+Enabling logging of all modules.
+pygame-menu-ce 4.5.2
+CLI_LAUNCH_PASS normal ['SplashState', 'IntroState', 'BackgroundState']

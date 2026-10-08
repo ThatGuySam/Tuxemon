@@ -1,0 +1,243 @@
+{
+  "base": "6d3fb1e7b4590183b53a33f7d6ff86aa39e87c00",
+  "renderer": "Actual Tuxemon Pygame / SDL, Xvfb acceptance; CLI smokes SDL dummy",
+  "inference": "SYNTHETIC HTTP FIXTURE only. Live Ollama unverified.",
+  "files": [
+    {
+      "file": "00-cli-custom.png",
+      "sha256": "2561d0f5c6c2606f5728525d678112a28a06536e7d45028f4d70d7d0b09301cc"
+    },
+    {
+      "file": "00-cli-normal.png",
+      "sha256": "d92b01ca57cd132f82a67764d53d7cd78484655ef0fe3d36474700293f100b5b"
+    },
+    {
+      "file": "01-map-spawn.png",
+      "sha256": "297eaa55411fc9587a51f0cabaa022f92a7f9fff7400c53e5d5b1012ee5b4f1f"
+    },
+    {
+      "file": "02-walk-to-professor.png",
+      "sha256": "8fdea7bad5163260872c91ac53e9d600b1eef646e7c593357674bd63772f08c0"
+    },
+    {
+      "file": "03-return-opens-npc.png",
+      "sha256": "2561d0f5c6c2606f5728525d678112a28a06536e7d45028f4d70d7d0b09301cc"
+    },
+    {
+      "file": "04-exact-preview-no-request.png",
+      "sha256": "380311d21e043d47a14898766da193ba616cc3ef8a2bed24ecba71e47d5bffcf"
+    },
+    {
+      "file": "05-synthetic-http-npc-reply.png",
+      "sha256": "9cb8c1e1014149d87b6109bf411777518fa556d87fe5b3cf5db7b7a57a3af573"
+    },
+    {
+      "file": "06-reply-next-page.png",
+      "sha256": "38bd2d7c26207fbe2dac0c46a0d48eeb9bae15e68e0d41b4759a688273399686"
+    },
+    {
+      "file": "07-followup-synthetic.png",
+      "sha256": "e6a5432c1573ab2a471c91b9bba3b1d80d580af2d62e6f05acff217c200e5f06"
+    },
+    {
+      "file": "08-cancel-retains-draft.png",
+      "sha256": "c9a69e921853df09bef643d35f2d3e29b8663259b6948427cfe05ca883c27811"
+    },
+    {
+      "file": "09-quest-separate-confirmation.png",
+      "sha256": "b13f23a335944682c700c79e54ee882ae2b04f7195be175ac865698db173eea5"
+    },
+    {
+      "file": "10-guarded-real-bag-trade.png",
+      "sha256": "9d9b3f647e9446c13600ae7d2c972f18b5452c556c911b992404277e97e1710d"
+    },
+    {
+      "file": "11-repeat-trade-refused.png",
+      "sha256": "e547537a31cc4597b7a76393c7cc4b0e3c92afa87a4a8e6089c8ebb463fb5138"
+    },
+    {
+      "file": "12-repeatable-reset.png",
+      "sha256": "d4bec26b57a0c68da4e0b689031b2a4b9c339ced2336533b571390cfb55c0936"
+    },
+    {
+      "file": "13-tracker-name-and-safe-route.png",
+      "sha256": "e825b84f31abb72b4c2a94a778dd954a2cda8768ad54878178080d86c27db80c"
+    },
+    {
+      "file": "14-warden-refusal-and-guarded-permit.png",
+      "sha256": "6aa0a87aaecdc038d12aff61c7dacc61dfbe4ffd676d14aea5af88cc601b88c4"
+    },
+    {
+      "file": "15-medic-competing-needs-and-kit.png",
+      "sha256": "c23d643cd4988b851e1221049c082ce55ee5cab8a2182d51ad0df6d2038dabfa"
+    },
+    {
+      "file": "16-engine-state-reconstruction.png",
+      "sha256": "93c5f3804fe425fff018a9369945c9326de199984eafa14310c1f61aa5f5b5e7"
+    },
+    {
+      "file": "cli-custom.json",
+      "sha256": "703680ba8882140369011e8519b7a19d61865a8d0c5c551906dfc52b70fcd3b5"
+    },
+    {
+      "file": "cli-normal.json",
+      "sha256": "45617bef35aae47252427471c6df79b2895a2993d6860d40841b1627e01fa055"
+    },
+    {
+      "file": "editor-A-0-Intent-composer.png",
+      "sha256": "3827e020afbdfbc8a49cc0c112e839f6c59a6bd2c541458dc9761f9205c5512b"
+    },
+    {
+      "file": "editor-A-1-Keyword-chips.png",
+      "sha256": "65c34db61ac1c81637a604f97648e53a6b18d4798893d5ca8c5acc33bc5dd9ab"
+    },
+    {
+      "file": "editor-A-2-Initials-shorthand.png",
+      "sha256": "56e906c9e4ea7293803093c9055fcb0370ef5ec0feb2f20bd79912ab13e04baf"
+    },
+    {
+      "file": "editor-A-3-Predictive-grid.png",
+      "sha256": "9c34bee04f72016fec13cb32304fc2a614ea4347cb8bfc4237d58cc586956502"
+    },
+    {
+      "file": "editor-A-4-Grouped-alphabet.png",
+      "sha256": "b330b7c3f933006efb3a4bc2f2ff5e87ed8a1759052c6bf21bd5a2571d8dfe19"
+    },
+    {
+      "file": "editor-A-5-Custom-EdgeWrite.png",
+      "sha256": "e0eecfcbe1b94ca822306e7186aa5a9880f9b61202566669ce9c1d5b7384d5a3"
+    },
+    {
+      "file": "editor-A-6-Dasher-inspired-tree.png",
+      "sha256": "9cc3bdf9ee35a0858313b6fe6bec0af83792d9368fce2445c81e9ec0fcf905c1"
+    },
+    {
+      "file": "editor-A-7-Radial-groups.png",
+      "sha256": "df573f168a7e6d3ed50cbc3aba5f27effa6dbc044acaf18ca44000b0689d155d"
+    },
+    {
+      "file": "editor-A-8-Host-keyboard.png",
+      "sha256": "a4705b1f55492b0eceb92418e90ee058fd89a745e5cd59e6c430fd3a20f96694"
+    },
+    {
+      "file": "editor-Return-0-Intent-composer.png",
+      "sha256": "3827e020afbdfbc8a49cc0c112e839f6c59a6bd2c541458dc9761f9205c5512b"
+    },
+    {
+      "file": "editor-Return-1-Keyword-chips.png",
+      "sha256": "65c34db61ac1c81637a604f97648e53a6b18d4798893d5ca8c5acc33bc5dd9ab"
+    },
+    {
+      "file": "editor-Return-2-Initials-shorthand.png",
+      "sha256": "56e906c9e4ea7293803093c9055fcb0370ef5ec0feb2f20bd79912ab13e04baf"
+    },
+    {
+      "file": "editor-Return-3-Predictive-grid.png",
+      "sha256": "9c34bee04f72016fec13cb32304fc2a614ea4347cb8bfc4237d58cc586956502"
+    },
+    {
+      "file": "editor-Return-4-Grouped-alphabet.png",
+      "sha256": "b330b7c3f933006efb3a4bc2f2ff5e87ed8a1759052c6bf21bd5a2571d8dfe19"
+    },
+    {
+      "file": "editor-Return-5-Custom-EdgeWrite.png",
+      "sha256": "e0eecfcbe1b94ca822306e7186aa5a9880f9b61202566669ce9c1d5b7384d5a3"
+    },
+    {
+      "file": "editor-Return-6-Dasher-inspired-tree.png",
+      "sha256": "9cc3bdf9ee35a0858313b6fe6bec0af83792d9368fce2445c81e9ec0fcf905c1"
+    },
+    {
+      "file": "editor-Return-7-Radial-groups.png",
+      "sha256": "df573f168a7e6d3ed50cbc3aba5f27effa6dbc044acaf18ca44000b0689d155d"
+    },
+    {
+      "file": "editor-Return-8-Host-keyboard.png",
+      "sha256": "a4705b1f55492b0eceb92418e90ee058fd89a745e5cd59e6c430fd3a20f96694"
+    },
+    {
+      "file": "error-http_error.png",
+      "sha256": "388d0745664f2d8e637d560308d9eb32c924f85f04f7253d9939c2b6de98a94a"
+    },
+    {
+      "file": "error-malformed.png",
+      "sha256": "4ce8976096dd8668265ffc218a015112094ee8e8f55dc14fe6eae32898fd804b"
+    },
+    {
+      "file": "error-socket-timeout.png",
+      "sha256": "6acdef71553c4a1d181da8e1db8e85ec314df45e2447bec2f2aad20a333001ae"
+    },
+    {
+      "file": "preview-A-0.png",
+      "sha256": "15859c1d2091bbd0534f9e42fa62abd50b05e01418f1ea08a438d22e010761d0"
+    },
+    {
+      "file": "preview-A-1.png",
+      "sha256": "5368ee33496c6df849f476677c52b68008fcff12857ded8f4c64941d3e1ec7e6"
+    },
+    {
+      "file": "preview-A-2.png",
+      "sha256": "c271d5a47eafb886a219d4587922ba20f63ecbee646b17a74ad2ceddc8c7c6d3"
+    },
+    {
+      "file": "preview-A-3.png",
+      "sha256": "2e71abf635236eb42f5c90beafd87cbc02f71d56eb639dfe20466fd9c0bc0c41"
+    },
+    {
+      "file": "preview-A-4.png",
+      "sha256": "99cf81f0e92d450c146ff2ddd83f7c918668102d4652c8360eba9226fc3a4435"
+    },
+    {
+      "file": "preview-A-5.png",
+      "sha256": "0e4b8f4097f91980e01391da93650e9ca973bf03f815a635244be32cd4e9f5fd"
+    },
+    {
+      "file": "preview-A-6.png",
+      "sha256": "7230d891eee7cf05762d087a25536ce8a42b43da59ac6b3f1acfffca6d73d15f"
+    },
+    {
+      "file": "preview-A-7.png",
+      "sha256": "1426eafd89058b20b56038c5bee5fa67c8032ac7bdea99ede1d30b9ef438e408"
+    },
+    {
+      "file": "preview-A-8.png",
+      "sha256": "5af9773f41819377971e218076bed5e01badba519f987fabae8e7b0b27593969"
+    },
+    {
+      "file": "preview-Return-0.png",
+      "sha256": "15859c1d2091bbd0534f9e42fa62abd50b05e01418f1ea08a438d22e010761d0"
+    },
+    {
+      "file": "preview-Return-1.png",
+      "sha256": "5368ee33496c6df849f476677c52b68008fcff12857ded8f4c64941d3e1ec7e6"
+    },
+    {
+      "file": "preview-Return-2.png",
+      "sha256": "c271d5a47eafb886a219d4587922ba20f63ecbee646b17a74ad2ceddc8c7c6d3"
+    },
+    {
+      "file": "preview-Return-3.png",
+      "sha256": "2e71abf635236eb42f5c90beafd87cbc02f71d56eb639dfe20466fd9c0bc0c41"
+    },
+    {
+      "file": "preview-Return-4.png",
+      "sha256": "99cf81f0e92d450c146ff2ddd83f7c918668102d4652c8360eba9226fc3a4435"
+    },
+    {
+      "file": "preview-Return-5.png",
+      "sha256": "0e4b8f4097f91980e01391da93650e9ca973bf03f815a635244be32cd4e9f5fd"
+    },
+    {
+      "file": "preview-Return-6.png",
+      "sha256": "7230d891eee7cf05762d087a25536ce8a42b43da59ac6b3f1acfffca6d73d15f"
+    },
+    {
+      "file": "preview-Return-7.png",
+      "sha256": "1426eafd89058b20b56038c5bee5fa67c8032ac7bdea99ede1d30b9ef438e408"
+    },
+    {
+      "file": "preview-Return-8.png",
+      "sha256": "5af9773f41819377971e218076bed5e01badba519f987fabae8e7b0b27593969"
+    }
+  ]
+}

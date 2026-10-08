@@ -1,0 +1,41 @@
+pygame-ce 2.5.7 (SDL 2.32.10, Python 3.12.14)
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/work/tuxemon-custom
+configfile: pyproject.toml
+plugins: mock-3.16.0, cov-7.1.0
+collected 1 item
+
+tests/custom_game/test_game.py F                                         [100%]
+
+=================================== FAILURES ===================================
+_________ test_translation_recompile_refreshes_existing_gettext_cache __________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_translation_recompile_ref0')
+
+    def test_translation_recompile_refreshes_existing_gettext_cache(tmp_path):
+        """New scenario item names must not break an existing cached campaign."""
+        from gettext import translation
+
+        from tuxemon.locale.compiler import GettextCompiler
+
+        source = tmp_path / 'base.po'
+        output = tmp_path / 'l18n/en_US/LC_MESSAGES/base.mo'
+        compiler = GettextCompiler(tmp_path)
+        source.write_text('msgid "existing_item"\nmsgstr "Existing item"\n')
+        compiler.compile_gettext(source, output)
+        first = translation('base', tmp_path / 'l18n', ['en_US'])
+        assert first.gettext('custom_crystal') == 'custom_crystal'
+        source.write_text('msgid "existing_item"\nmsgstr "Existing item"\n\nmsgid "custom_crystal"\nmsgstr "Expedition crystal"\n')
+        compiler.compile_gettext(source, output)
+        refreshed = translation('base', tmp_path / 'l18n', ['en_US'])
+>       assert refreshed.gettext('custom_crystal') == 'Expedition crystal'
+E       AssertionError: assert 'custom_crystal' == 'Expedition crystal'
+E
+E         - Expedition crystal
+E         + custom_crystal
+
+tests/custom_game/test_game.py:568: AssertionError
+=========================== short test summary info ============================
+FAILED tests/custom_game/test_game.py::test_translation_recompile_refreshes_existing_gettext_cache
+============================== 1 failed in 0.08s ===============================

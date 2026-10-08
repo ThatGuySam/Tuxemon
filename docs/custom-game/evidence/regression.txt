@@ -1,0 +1,17 @@
+pygame-ce 2.5.7 (SDL 2.32.10, Python 3.12.14)
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/work/tuxemon-custom
+configfile: pyproject.toml
+plugins: mock-3.16.0, cov-7.1.0
+collected 122 items
+
+tests/tuxemon/test_config.py ...................................         [ 28%]
+tests/tuxemon/test_event_middleware_input_translator.py ........         [ 35%]
+tests/tuxemon/test_event_loader_map.py ...                               [ 37%]
+tests/tuxemon/test_map_manager.py ...................................... [ 68%]
+                                                                         [ 68%]
+tests/tuxemon/test_npc_manager.py ...................................... [100%]
+
+- generated xml file: /workspace/work/tuxemon-custom/work/regression.junit.xml -
+============================= 122 passed in 3.39s ==============================

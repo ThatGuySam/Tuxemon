@@ -157,6 +157,9 @@ class WorldState(State):
             surface, self.client.map_manager.current_map
         )
         self.transition_manager.draw(surface)
+        if self.client.get_map_name() == "custom_last_ascent.tmx":
+            from tuxemon.custom_game.world_ui import draw_camp
+            draw_camp(self.client, surface)
 
     def process_event(self, event: PlayerInput) -> PlayerInput | None:
         """

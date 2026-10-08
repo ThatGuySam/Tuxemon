@@ -1,0 +1,10 @@
+audio: {}
+combat: {}
+slug: custom_ascent_4
+speech:
+  profile:
+    default: {}
+template:
+  combat_sheet: knight
+  slug: knight
+  sprite_name: knight

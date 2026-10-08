@@ -1,0 +1,17 @@
+pygame-ce 2.5.7 (SDL 2.32.10, Python 3.12.14)
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: /workspace/work/tuxemon-custom
+configfile: pyproject.toml
+plugins: mock-3.16.0, cov-7.1.0
+collected 7 items
+
+tests/custom_game/test_game.py .......                                   [100%]
+
+=============================== warnings summary ===============================
+tests/custom_game/test_game.py::test_actual_game_acceptance
+  /workspace/work/tuxemon-custom/tuxemon/prepare.py:76: Warning: no fast renderer available
+    screen = pg.display.set_mode(CONFIG.resolution, flags, vsync=CONFIG.vsync)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 7 passed, 1 warning in 13.36s =========================
