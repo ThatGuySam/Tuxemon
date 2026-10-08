@@ -2,7 +2,9 @@
 # Copyright (c) 2014-2026 William Edwards <shadowapex@gmail.com>, Benjamin Bean <superman2k5@gmail.com>
 from __future__ import annotations
 
+import gettext
 import logging
+import os
 from pathlib import Path
 
 from babel.messages.mofile import write_mo
@@ -42,6 +44,13 @@ class GettextCompiler:
         with mo_path.open("wb") as mo_file:
             write_mo(mo_file, catalog)
             logger.debug(f"writing {self.locale_dir} mo: {mo_path}")
+
+        # gettext.translation caches parsed catalogs by path. Recompiling a PO
+        # in this same process must invalidate its old MO, or newly added item
+        # names can fail database validation even after successful compilation.
+        gettext._translations.pop(
+            (gettext.GNUTranslations, os.path.abspath(mo_path)), None
+        )
 
     def get_mo_path(self, locale: str, category: str, domain: str) -> Path:
         """

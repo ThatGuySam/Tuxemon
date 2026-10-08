@@ -1,0 +1,1129 @@
+{
+  "title": "The Last Ascent",
+  "story_provenance": {
+    "classification": "AUTHORED GAME FICTION",
+    "canonical_status": "Original late-game scenario, not canonical Tuxemon endgame.",
+    "source_facts": [
+      {
+        "fact": "Rockitten is an Earth-type Tuxemon.",
+        "source": "mods/tuxemon/l18n/en_US/LC_MESSAGES/base.po",
+        "entry": "chooseyerfateRockitten"
+      }
+    ],
+    "scope": "Walkable dialogue and quest playground; no authored combat outcome or measured model result.",
+    "integration_note": "Spawn moved below companion collision footprint. Classifier descriptions clarify the same existing actions; human preview/meaning confirmation remains required."
+  },
+  "areas": [
+    {
+      "name": "Summit Camp",
+      "map": [
+        "####################",
+        "#..................#",
+        "#..................#",
+        "#..###.............#",
+        "#.............~~...#",
+        "#.............~~...#",
+        "#..................#",
+        "#...................",
+        "#..................#",
+        "#..................#",
+        "#..................#",
+        "#..,,,.............#",
+        "#..................#",
+        "####################"
+      ]
+    },
+    {
+      "name": "Supply Terrace",
+      "map": [
+        "####################",
+        "#..................#",
+        "#..................#",
+        "#..................#",
+        "#..###.............#",
+        "#..................#",
+        "#..................#",
+        "....................",
+        "#..................#",
+        "#..................#",
+        "#.............###..#",
+        "#...,,.............#",
+        "#..................#",
+        "####################"
+      ]
+    },
+    {
+      "name": "Echo Ravine",
+      "map": [
+        "####################",
+        "#..................#",
+        "#...~..............#",
+        "#...~...,,,........#",
+        "#...~..............#",
+        "#...~..............#",
+        "#..................#",
+        "....................",
+        "#..................#",
+        "#.............~....#",
+        "#.............~....#",
+        "#.............~....#",
+        "#..................#",
+        "####################"
+      ]
+    },
+    {
+      "name": "Crown Approach",
+      "map": [
+        "####################",
+        "#..................#",
+        "#.........G........#",
+        "#....###...........#",
+        "#..................#",
+        "#..................#",
+        "#..................#",
+        "...................#",
+        "#..................#",
+        "#..................#",
+        "#..................#",
+        "#............~~~...#",
+        "#..................#",
+        "####################"
+      ]
+    }
+  ],
+  "initial_state": {
+    "area": 0,
+    "x": 10,
+    "y": 10,
+    "flags": 0,
+    "inventory": 3,
+    "inventory_semantics": "bitmask: aid kit=1, crystal=2, permit=4, supply pack=8"
+  },
+  "flags": {
+    "rescued": 1,
+    "clue": 2,
+    "safe_route": 4,
+    "permit": 8,
+    "supplies": 16,
+    "tactics": 32,
+    "duty": 64,
+    "epilogue": 128
+  },
+  "items": {
+    "aid_kit": 1,
+    "crystal": 2,
+    "permit": 4,
+    "supply_pack": 8
+  },
+  "exits": [
+    {
+      "area": 0,
+      "x": 19,
+      "y": 7,
+      "to_area": 1,
+      "to_x": 1,
+      "to_y": 7
+    },
+    {
+      "area": 1,
+      "x": 19,
+      "y": 7,
+      "to_area": 2,
+      "to_x": 1,
+      "to_y": 7
+    },
+    {
+      "area": 1,
+      "x": 0,
+      "y": 7,
+      "to_area": 0,
+      "to_x": 18,
+      "to_y": 7
+    },
+    {
+      "area": 2,
+      "x": 19,
+      "y": 7,
+      "to_area": 3,
+      "to_x": 1,
+      "to_y": 7
+    },
+    {
+      "area": 2,
+      "x": 0,
+      "y": 7,
+      "to_area": 1,
+      "to_x": 18,
+      "to_y": 7
+    },
+    {
+      "area": 3,
+      "x": 0,
+      "y": 7,
+      "to_area": 2,
+      "to_x": 18,
+      "to_y": 7
+    }
+  ],
+  "npcs": [
+    {
+      "name": "Professor",
+      "area": 0,
+      "x": 8,
+      "y": 6,
+      "topic": "championship preparation",
+      "keywords": [
+        "champion",
+        "tactics",
+        "earth",
+        "plan"
+      ],
+      "opening": "The Crown trial starts at dusk. Your Rockitten is Earth-type. Prepare your route and your team; the injured scout also needs help.",
+      "replies": [
+        {
+          "label": "earth_plan",
+          "label_description": "Ask Earth tactics",
+          "text": "Rockitten is Earth-type. Study the trial briefing, then choose your opening carefully. Type alone does not guarantee a win. I have marked your preparation complete.",
+          "utterance": "How should I prepare my Earth-type Rockitten for the Crown trial?",
+          "keywords": [
+            "earth",
+            "rockitten",
+            "tactics"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 32,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask how to prepare Earth-type Rockitten for the championship"
+        },
+        {
+          "label": "safe_plan",
+          "label_description": "Ask safe plan",
+          "text": "Travel through Supply Terrace and Echo Ravine. Get a permit from Warden Vale, and check the scout before the trial. That route gives you time to prepare.",
+          "utterance": "Give me a safe preparation plan, including the injured scout.",
+          "keywords": [
+            "safe",
+            "plan",
+            "prepare"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "request a safe travel and preparation plan including the injured scout"
+        },
+        {
+          "label": "rush_trial",
+          "label_description": "Rush to the trial",
+          "text": "You can walk to Crown Approach now. The trial steward still needs your permit, supplies, route report, and preparation notes. Rushing skips none of those duties.",
+          "utterance": "I want to rush straight to the Crown trial.",
+          "keywords": [
+            "rush",
+            "trial",
+            "straight"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "rush straight to the championship without preparation"
+        },
+        {
+          "label": "type_correction",
+          "label_description": "Correct a type",
+          "text": "You are right to question that. Rockitten is Earth-type. This camp has no verified type information for your other companion; ask about Rockitten or the route.",
+          "utterance": "Rockitten is Earth, not Water. Correct the type in your advice.",
+          "keywords": [
+            "correct",
+            "water",
+            "type"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "correct the claim that Rockitten is Water-type instead of Earth-type"
+        },
+        {
+          "label": "epilogue",
+          "label_description": "Register entry",
+          "text": "Your permit, supplies, safe route, and tactics are ready. The rescued scout has reached camp. The Crown trial steward accepts your entry; dawn is yours to face.",
+          "utterance": "All duties are complete. Register me for the Crown trial.",
+          "keywords": [
+            "register",
+            "complete",
+            "duties"
+          ],
+          "requires_flags": 61,
+          "forbids_flags": 0,
+          "set_flags": 128,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "register for the championship after completing every duty"
+        },
+        {
+          "label": "prof_unknown",
+          "label_description": "Clarify question",
+          "text": "I need a clearer question. Are you asking about Rockitten, the preparation route, or entering the trial? I cannot promise a battle result.",
+          "utterance": "What does the zhurble tactic do?",
+          "keywords": [
+            "clarify",
+            "unknown",
+            "zhurble"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask an unrecognized or ambiguous question outside the known tactics and route"
+        }
+      ]
+    },
+    {
+      "name": "Quartermaster",
+      "area": 1,
+      "x": 7,
+      "y": 6,
+      "topic": "supplies and trade",
+      "keywords": [
+        "supplies",
+        "trade",
+        "crystal",
+        "pack"
+      ],
+      "opening": "I can exchange your crystal for one supply pack. The scout needs your aid kit. Our camp has one spare pack, so choose an exact quantity.",
+      "replies": [
+        {
+          "label": "buy_one",
+          "label_description": "Trade for one pack",
+          "text": "One crystal for one supply pack, agreed. I have reserved the pack for your ascent. Keep the aid kit ready for the scout.",
+          "utterance": "Trade my crystal for exactly one supply pack.",
+          "keywords": [
+            "one",
+            "trade",
+            "crystal"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 16,
+          "set_flags": 16,
+          "give_item": 8,
+          "requires_items": 2,
+          "spend_item": 2,
+          "classifier_label": "trade one crystal for exactly one supply pack"
+        },
+        {
+          "label": "buy_many",
+          "label_description": "Request two packs",
+          "text": "Two packs are unavailable. Our camp has one spare pack. Ask for exactly one if you want the crystal exchange.",
+          "utterance": "I need two supply packs, not one.",
+          "keywords": [
+            "two",
+            "packs",
+            "quantity"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "request two or more supply packs rather than one"
+        },
+        {
+          "label": "refuse_trade",
+          "label_description": "Decline the trade",
+          "text": "Keep your crystal. I have made no trade. If you change your mind, ask for one pack. The injured scout still needs help.",
+          "utterance": "Do not trade my crystal. I want to keep it.",
+          "keywords": [
+            "keep",
+            "decline",
+            "refuse"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "refuse the trade and keep the crystal"
+        },
+        {
+          "label": "check_stock",
+          "label_description": "Check inventory",
+          "text": "You arrived with an aid kit and a crystal. A supply pack appears in your bag after the exchange. Check your journal for current items before another request.",
+          "utterance": "What do I have, and what can you trade?",
+          "keywords": [
+            "inventory",
+            "stock",
+            "have"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask which supplies and quantities the quartermaster has available"
+        },
+        {
+          "label": "already_supplied",
+          "label_description": "Another pack?",
+          "text": "You already arranged the camp supply pack. I have no second pack to offer. Take the reserved pack to Crown Approach.",
+          "utterance": "I already got the supply pack. Can I get another?",
+          "keywords": [
+            "already",
+            "another",
+            "second"
+          ],
+          "requires_flags": 16,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask for another pack after already obtaining supplies"
+        },
+        {
+          "label": "quarter_unknown",
+          "label_description": "Clarify a trade",
+          "text": "Name the item and quantity. I offer one supply pack for a crystal. I cannot price unfamiliar items.",
+          "utterance": "How many flarn stones buy a moon parcel?",
+          "keywords": [
+            "flarn",
+            "unfamiliar",
+            "clarify"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask an unclear trade question without identifying the item or quantity"
+        }
+      ]
+    },
+    {
+      "name": "Tracker Iona",
+      "area": 2,
+      "x": 12,
+      "y": 6,
+      "topic": "rare creature clue",
+      "keywords": [
+        "creature",
+        "clue",
+        "name",
+        "trail"
+      ],
+      "opening": "A rare companion crossed this ravine. I called it Luma, then noticed the tag read Lumi. Its footprints head uphill, away from the soaked shortcut.",
+      "replies": [
+        {
+          "label": "correct_name",
+          "label_description": "Correct tag name",
+          "text": "Lumi, yes. Thank you for the correction. I have copied the exact tag into your journal. Its footprints skirt the water and lead toward Crown Approach.",
+          "utterance": "The tag says Lumi, not Luma. Please correct the name.",
+          "keywords": [
+            "lumi",
+            "luma",
+            "correct"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 2,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "correct the creature tag from Luma to Lumi"
+        },
+        {
+          "label": "follow_clue",
+          "label_description": "Ask where it went",
+          "text": "Follow the dry eastern trail toward Crown Approach. I found footprints there, but I cannot promise you will meet Lumi. Tell Warden Vale what you learned.",
+          "utterance": "Where did the tagged creature go?",
+          "keywords": [
+            "where",
+            "footprints",
+            "trail"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 2,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask where the creature went or where its footprints lead"
+        },
+        {
+          "label": "unknown_name",
+          "label_description": "Unknown name?",
+          "text": "I have no record of a creature named Vorpax. I can describe the tagged companion I saw. Give me a spelling or a detail before I identify anything.",
+          "utterance": "Is the creature Vorpax? I have never heard that name here.",
+          "keywords": [
+            "vorpax",
+            "identify",
+            "unknown"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask about an unfamiliar creature name outside Luma and Lumi"
+        },
+        {
+          "label": "leave_creature",
+          "label_description": "Leave it alone",
+          "text": "We can leave the companion alone. The ascent needs a safe route report, and your aid kit belongs with the injured scout.",
+          "utterance": "Do not chase Lumi. Leave the creature alone.",
+          "keywords": [
+            "leave",
+            "chase",
+            "alone"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "choose to leave the creature alone and stop following it"
+        },
+        {
+          "label": "safe_route",
+          "label_description": "Confirm dry trail",
+          "text": "With the footprints checked, I can confirm a dry passage around the flooded cut. I have marked the safe route in your journal. Bring the report to Warden Vale.",
+          "utterance": "I checked the clue. Mark a safe route around the water.",
+          "keywords": [
+            "safe",
+            "dry",
+            "water"
+          ],
+          "requires_flags": 2,
+          "forbids_flags": 0,
+          "set_flags": 4,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "request the dry safe trail after checking the creature clue"
+        },
+        {
+          "label": "tracker_unknown",
+          "label_description": "Clarify the clue",
+          "text": "Tell me whether you want the tag spelling, the footprints, or a safe route. I will keep an unfamiliar name unresolved.",
+          "utterance": "Explain the thing from before.",
+          "keywords": [
+            "thing",
+            "before",
+            "clarify"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask an unclear question about the clue or creature without a clear subject"
+        }
+      ]
+    },
+    {
+      "name": "Medic Ren",
+      "area": 2,
+      "x": 7,
+      "y": 8,
+      "topic": "injured scout and obligations",
+      "keywords": [
+        "injured",
+        "scout",
+        "help",
+        "aid"
+      ],
+      "opening": "The scout sprained an ankle while helping your companion. Use the aid kit, escort the scout to camp, then return to your ascent.",
+      "replies": [
+        {
+          "label": "rescue_scout",
+          "label_description": "Use kit and escort",
+          "text": "You apply the aid kit and guide the scout along the dry path to camp. Ren takes over there. Your companion rests beside you, ready to continue.",
+          "utterance": "Use my aid kit and escort the injured scout back to camp.",
+          "keywords": [
+            "aid",
+            "escort",
+            "rescue"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 1,
+          "set_flags": 65,
+          "give_item": 0,
+          "requires_items": 1,
+          "spend_item": 1,
+          "classifier_label": "use the aid kit and escort the injured scout back to camp"
+        },
+        {
+          "label": "prioritize_trial",
+          "label_description": "Trial comes first",
+          "text": "The trial can wait until dusk. The scout cannot walk safely alone. Return with your aid kit when you are ready; the rescue remains unfinished.",
+          "utterance": "Ignore the scout for now. I want to enter the trial first.",
+          "keywords": [
+            "ignore",
+            "first",
+            "trial"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "prioritize entering the trial over helping the injured scout"
+        },
+        {
+          "label": "help_companion",
+          "label_description": "Help companion",
+          "text": "Your companion needs a short rest beside Ren. Its condition does not require the scout kit. You can stay together while escorting the scout.",
+          "utterance": "I need to help my companion too. Can I do both?",
+          "keywords": [
+            "companion",
+            "both",
+            "rest"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask to help the player companion rather than the injured scout"
+        },
+        {
+          "label": "refuse_kit",
+          "label_description": "Refuse kit use",
+          "text": "I have left your aid kit untouched. Stay with the scout or seek help from camp. Tell me clearly when you want to use the kit and begin the escort.",
+          "utterance": "Do not use my aid kit yet. I am not ready to escort anyone.",
+          "keywords": [
+            "do not",
+            "not ready",
+            "refuse"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "refuse to use or give up the aid kit"
+        },
+        {
+          "label": "rescue_status",
+          "label_description": "Check scout duty",
+          "text": "The scout reached camp and Ren took over care. That duty is complete. Your companion may continue the ascent with you.",
+          "utterance": "I escorted the scout. Is that duty complete?",
+          "keywords": [
+            "status",
+            "complete",
+            "escorted"
+          ],
+          "requires_flags": 1,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask whether the scout rescue duty is already complete"
+        },
+        {
+          "label": "medic_unknown",
+          "label_description": "Clarify help",
+          "text": "Name who needs help: the injured scout or your companion. I will not spend the aid kit from an unclear request.",
+          "utterance": "Help them with that thing.",
+          "keywords": [
+            "them",
+            "thing",
+            "clarify"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask an unclear medical or help question without naming who needs help"
+        }
+      ]
+    },
+    {
+      "name": "Warden Vale",
+      "area": 3,
+      "x": 10,
+      "y": 6,
+      "topic": "final gate and permit",
+      "keywords": [
+        "gate",
+        "shortcut",
+        "permit",
+        "route"
+      ],
+      "opening": "The flooded shortcut is closed. The marked ascent stays open. Bring a route report for a trial permit; the gate also checks your supplies and duties.",
+      "replies": [
+        {
+          "label": "take_shortcut",
+          "label_description": "Request risky cut",
+          "text": "The flooded cut remains closed. Fast water reaches the ledge, and I will not send you there. Use Tracker Iona's dry route to reach this gate.",
+          "utterance": "Open the flooded shortcut. I accept the risk.",
+          "keywords": [
+            "shortcut",
+            "risk",
+            "flooded"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "request access to the dangerous flooded shortcut"
+        },
+        {
+          "label": "refuse_shortcut",
+          "label_description": "Refuse shortcut",
+          "text": "Understood. You have chosen the marked ascent. Ask Iona for the dry route report, then return for your permit.",
+          "utterance": "Do not open the shortcut. I refuse that risk.",
+          "keywords": [
+            "refuse",
+            "do not",
+            "risk"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "reject the risky shortcut and choose the safe marked path"
+        },
+        {
+          "label": "get_permit",
+          "label_description": "Ask for permit",
+          "text": "Your safe route report is accepted. Here is your trial permit. Complete your supplies, tactics, and scout duty before asking the Professor to register your entry.",
+          "utterance": "I have the safe route report. Give me the trial permit.",
+          "keywords": [
+            "permit",
+            "report",
+            "entry"
+          ],
+          "requires_flags": 4,
+          "forbids_flags": 8,
+          "set_flags": 8,
+          "give_item": 4,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask the warden to grant a championship entry permit"
+        },
+        {
+          "label": "gate_status",
+          "label_description": "Check requirements",
+          "text": "For entry, bring a permit and supplies; complete your tactics notes and scout rescue. Your journal tracks each duty. The Professor registers you when all are complete.",
+          "utterance": "What is still required before I can enter?",
+          "keywords": [
+            "required",
+            "status",
+            "enter"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask what requirements remain before the gate or permit can be obtained"
+        },
+        {
+          "label": "permit_again",
+          "label_description": "Existing permit?",
+          "text": "Your permit remains valid. You need no second permit. Finish your other duties and ask the Professor to register your trial entry.",
+          "utterance": "I already have a permit. Do I need another?",
+          "keywords": [
+            "already",
+            "another",
+            "valid"
+          ],
+          "requires_flags": 8,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask about a permit that the player already has"
+        },
+        {
+          "label": "warden_unknown",
+          "label_description": "Clarify request",
+          "text": "State whether you want a permit, the entry requirements, or the marked route. An unclear request will not open the flooded cut.",
+          "utterance": "Open that other thing over there.",
+          "keywords": [
+            "thing",
+            "other",
+            "clarify"
+          ],
+          "requires_flags": 0,
+          "forbids_flags": 0,
+          "set_flags": 0,
+          "give_item": 0,
+          "requires_items": 0,
+          "spend_item": 0,
+          "classifier_label": "ask an unclear gate or travel question with no identifiable request"
+        }
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "title": "Care for the Scout",
+      "goal": "Use the aid kit with Medic Ren and escort the scout to camp.",
+      "completion_flag": 1
+    },
+    {
+      "title": "Find the Dry Passage",
+      "goal": "Check Iona's tag clue, then request the safe route.",
+      "completion_flag": 4
+    },
+    {
+      "title": "Prepare for the Crown",
+      "goal": "Arrange one supply pack, ask for tactics, and obtain Vale's permit.",
+      "completion_flags": 56
+    },
+    {
+      "title": "Enter at Dawn",
+      "goal": "Return to the Professor after all duties are complete.",
+      "completion_flag": 128
+    }
+  ],
+  "journal": {
+    "title": "Ascent Journal",
+    "reset_note": "Reset this camp story to try a different conversation approach.",
+    "goal_brief": "Rescue the scout, mark the dry route, prepare supplies and tactics, then register for the Crown trial.",
+    "flag_labels": {
+      "1": "Scout at camp",
+      "2": "Exact tag clue copied",
+      "4": "Dry route marked",
+      "8": "Trial permit received",
+      "16": "One supply pack reserved",
+      "32": "Tactics notes ready",
+      "64": "Scout duty complete",
+      "128": "Trial entry registered"
+    }
+  },
+  "authored_probes": [
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 0,
+      "input": "How should I prepare Rockitten, my Earth companion?",
+      "expected_label": "earth_plan",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 0,
+      "input": "Give me a safe route and a preparation plan.",
+      "expected_label": "safe_plan",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 0,
+      "input": "Let us rush directly to the trial.",
+      "expected_label": "rush_trial",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 0,
+      "input": "Rockitten is Earth, not Water. Correct that.",
+      "expected_label": "type_correction",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 0,
+      "input": "What is a zhurble tactic?",
+      "expected_label": "prof_unknown",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 1,
+      "input": "Trade my crystal for exactly one supply pack.",
+      "expected_label": "buy_one",
+      "requires_flags": 0,
+      "requires_items": 2,
+      "forbids_flags": 16
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 1,
+      "input": "I want two packs, not one.",
+      "expected_label": "buy_many",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 1,
+      "input": "Do not trade. I want to keep the crystal.",
+      "expected_label": "refuse_trade",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 1,
+      "input": "I already received a pack; is there another?",
+      "expected_label": "already_supplied",
+      "requires_flags": 16,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 1,
+      "input": "What is the price of a flarn parcel?",
+      "expected_label": "quarter_unknown",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 2,
+      "input": "Her tag says Lumi, not Luma. Fix the spelling.",
+      "expected_label": "correct_name",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 2,
+      "input": "Where did that tagged creature go?",
+      "expected_label": "follow_clue",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 2,
+      "input": "Does Vorpax live here?",
+      "expected_label": "unknown_name",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 2,
+      "input": "Do not chase Lumi. Leave it alone.",
+      "expected_label": "leave_creature",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 2,
+      "input": "I checked the clue. Mark the dry route.",
+      "expected_label": "safe_route",
+      "requires_flags": 2,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 3,
+      "input": "Use my aid kit and escort the scout to camp.",
+      "expected_label": "rescue_scout",
+      "requires_flags": 0,
+      "requires_items": 1,
+      "forbids_flags": 1
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 3,
+      "input": "Ignore the scout; the trial comes first.",
+      "expected_label": "prioritize_trial",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 3,
+      "input": "Can I help my companion and the scout both?",
+      "expected_label": "help_companion",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 3,
+      "input": "Do not use the kit. I am not ready to escort.",
+      "expected_label": "refuse_kit",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 3,
+      "input": "Help them with that thing.",
+      "expected_label": "medic_unknown",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 4,
+      "input": "I accept the risk. Open the flooded shortcut.",
+      "expected_label": "take_shortcut",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 4,
+      "input": "Do not open that shortcut. I refuse the risk.",
+      "expected_label": "refuse_shortcut",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 4,
+      "input": "I have the route report. Issue my permit.",
+      "expected_label": "get_permit",
+      "requires_flags": 4,
+      "requires_items": 0,
+      "forbids_flags": 8
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 4,
+      "input": "I already have a valid permit. Need another?",
+      "expected_label": "permit_again",
+      "requires_flags": 8,
+      "requires_items": 0,
+      "forbids_flags": 0
+    },
+    {
+      "classification": "AUTHORED TEST INPUT, NOT MODEL OUTPUT",
+      "npc_id": 4,
+      "input": "Open that other thing.",
+      "expected_label": "warden_unknown",
+      "requires_flags": 0,
+      "requires_items": 0,
+      "forbids_flags": 0
+    }
+  ],
+  "world_consequences": [
+    {
+      "when_flags": 4,
+      "description": "Iona marks the dry route in the journal."
+    },
+    {
+      "when_flags": 1,
+      "description": "Ren confirms the scout reached camp."
+    },
+    {
+      "when_flags": 8,
+      "description": "Permit enters inventory."
+    },
+    {
+      "when_flags": 16,
+      "description": "One crystal leaves inventory; one supply pack enters."
+    },
+    {
+      "when_flags": 128,
+      "description": "Crown entry registered; gated area is eligible to open.",
+      "open_gate": {
+        "area": 3,
+        "x": 10,
+        "y": 2
+      }
+    }
+  ],
+  "interface_order": [
+    {
+      "method_id": 1,
+      "rank": 1,
+      "name": "Keyword chips"
+    },
+    {
+      "method_id": 0,
+      "rank": 2,
+      "name": "Intent composer"
+    },
+    {
+      "method_id": 2,
+      "rank": 3,
+      "name": "Initials shorthand"
+    },
+    {
+      "method_id": 3,
+      "rank": 4,
+      "name": "Predictive keyboard"
+    },
+    {
+      "method_id": 4,
+      "rank": 5,
+      "name": "Grouped alphabet"
+    },
+    {
+      "method_id": 5,
+      "rank": 6,
+      "name": "Gesture alphabet"
+    },
+    {
+      "method_id": 6,
+      "rank": 7,
+      "name": "Predictive tree"
+    },
+    {
+      "method_id": 7,
+      "rank": 8,
+      "name": "Radial groups"
+    },
+    {
+      "method_id": 8,
+      "rank": 9,
+      "name": "Paired input"
+    }
+  ],
+  "ranking_basis": "Research design judgment, not measured user performance."
+}

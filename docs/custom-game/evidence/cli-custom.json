@@ -1,0 +1,14 @@
+{
+  "entrypoint": "run_tuxemon.launch_game",
+  "argv": [
+    "--custom-game"
+  ],
+  "states": [
+    "CustomConversationState",
+    "WorldState",
+    "BackgroundState"
+  ],
+  "frames": 133,
+  "render": "SDL Pygame actual client",
+  "inference": "none"
+}
