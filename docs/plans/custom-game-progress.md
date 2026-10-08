@@ -93,3 +93,13 @@ Instead, use the user's explicitly authorized draft-PR delivery route. The
 complete source, report and rendered evidence are reviewable on the feature
 branch. A binary diff was applied to an exact-base worktree, whose resulting
 Git tree matched the implementation commit. Main remains untouched.
+
+## Delivered
+
+Draft PR: https://github.com/ThatGuySam/Tuxemon/pull/1
+
+Feature branch was pushed and the draft PR was created successfully. Its target
+base is exactly 6d3fb1e7b4590183b53a33f7d6ff86aa39e87c00. The PR includes the
+complete implementation, review report, reproducible setup/tests and 57 rendered
+captures. Product verification is complete with the limits stated above. No
+merge, deployment or main-branch push occurred.
