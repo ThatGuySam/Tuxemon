@@ -1,0 +1,54 @@
+Using Python 3.12.14 environment at: work/venv
+Resolved 32 packages in 5ms
+   Building cbor==1.0.0
+Downloading pillow (6.6MiB)
+Downloading pygame-ce (12.2MiB)
+Downloading ruff (9.9MiB)
+Downloading babel (9.7MiB)
+Downloading pydantic-core (2.0MiB)
+Downloading pygments (1.2MiB)
+Downloading pygame-menu-ce (1.3MiB)
+ Downloaded pygame-menu-ce
+ Downloaded pydantic-core
+ Downloaded pygments
+ Downloaded pillow
+ Downloaded ruff
+      Built cbor==1.0.0
+ Downloaded babel
+ Downloaded pygame-ce
+Prepared 32 packages in 446ms
+Installed 32 packages in 15ms
+ + annotated-types==0.8.0
+ + babel==2.18.0
+ + cbor==1.0.0
+ + certifi==2026.7.22
+ + charset-normalizer==3.5.2
+ + coverage==7.16.2
+ + idna==3.20
+ + iniconfig==2.3.0
+ + natsort==8.4.0
+ + packaging==26.3
+ + pillow==12.3.0
+ + pluggy==1.6.0
+ + prompt-toolkit==3.0.53
+ + pydantic==2.13.5
+ + pydantic-core==2.46.5
+ + pygame-ce==2.5.7
+ + pygame-menu-ce==4.5.2
+ + pygments==2.21.0
+ + pyperclip==1.11.0
+ + pyscroll==2.31
+ + pytest==9.1.1
+ + pytest-cov==7.1.0
+ + pytest-mock==3.16.0
+ + pytmx==3.32
+ + pyyaml==6.0.3
+ + requests==2.34.2
+ + ruff==0.16.9
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.4
+ + urllib3==2.8.0
+ + wcwidth==0.9.1
+ + websockets==17.1
+pygame-ce 2.5.7 (SDL 2.32.10, Python 3.12.14)
+Repository translations compiled; start the game in a fresh process.

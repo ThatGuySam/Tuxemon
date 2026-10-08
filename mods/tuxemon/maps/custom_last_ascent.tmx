@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="20" height="14" tilewidth="16" tileheight="16" infinite="0">
+  <properties>
+    <property name="edges" value="clamped" />
+    <property name="map_type" value="notype" />
+    <property name="slug" value="custom_last_ascent" />
+    <property name="inside" value="true" />
+  </properties>
+  <tileset firstgid="1" source="../gfx/tilesets/core_indoor_floors.tsx" />
+  <layer id="1" name="Camp floor" width="20" height="14">
+    <data encoding="csv">47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,802,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47,47</data>
+  </layer>
+  <objectgroup id="2" name="Collisions">
+    <object id="1" type="collision" x="0" y="0" width="320" height="16" />
+    <object id="2" type="collision" x="0" y="208" width="320" height="16" />
+    <object id="3" type="collision" x="0" y="0" width="16" height="224" />
+    <object id="4" type="collision" x="304" y="0" width="16" height="224" />
+  </objectgroup>
+  <objectgroup id="3" name="Events">
+    <object id="10" name="Create Professor" type="event" x="64" y="64" width="16" height="16">
+      <properties>
+        <property name="cond1" value="not char_exists custom_ascent_0" />
+        <property name="act1" value="create_npc custom_ascent_0,4,4,stand" />
+      </properties>
+    </object>
+    <object id="11" name="Talk Professor" type="event" x="64" y="64" width="16" height="16">
+      <properties>
+        <property name="cond1" value="is char_facing_tile player" />
+        <property name="cond2" value="is button_pressed INTERACT" />
+        <property name="act1" value="custom_conversation 0" />
+      </properties>
+    </object>
+    <object id="12" name="Create Quartermaster" type="event" x="128" y="64" width="16" height="16">
+      <properties>
+        <property name="cond1" value="not char_exists custom_ascent_1" />
+        <property name="act1" value="create_npc custom_ascent_1,8,4,stand" />
+      </properties>
+    </object>
+    <object id="13" name="Talk Quartermaster" type="event" x="128" y="64" width="16" height="16">
+      <properties>
+        <property name="cond1" value="is char_facing_tile player" />
+        <property name="cond2" value="is button_pressed INTERACT" />
+        <property name="act1" value="custom_conversation 1" />
+      </properties>
+    </object>
+    <object id="14" name="Create Tracker Iona" type="event" x="192" y="64" width="16" height="16">
+      <properties>
+        <property name="cond1" value="not char_exists custom_ascent_2" />
+        <property name="act1" value="create_npc custom_ascent_2,12,4,stand" />
+      </properties>
+    </object>
+    <object id="15" name="Talk Tracker Iona" type="event" x="192" y="64" width="16" height="16">
+      <properties>
+        <property name="cond1" value="is char_facing_tile player" />
+        <property name="cond2" value="is button_pressed INTERACT" />
+        <property name="act1" value="custom_conversation 2" />
+      </properties>
+    </object>
+    <object id="16" name="Create Medic Ren" type="event" x="96" y="144" width="16" height="16">
+      <properties>
+        <property name="cond1" value="not char_exists custom_ascent_3" />
+        <property name="act1" value="create_npc custom_ascent_3,6,9,stand" />
+      </properties>
+    </object>
+    <object id="17" name="Talk Medic Ren" type="event" x="96" y="144" width="16" height="16">
+      <properties>
+        <property name="cond1" value="is char_facing_tile player" />
+        <property name="cond2" value="is button_pressed INTERACT" />
+        <property name="act1" value="custom_conversation 3" />
+      </properties>
+    </object>
+    <object id="18" name="Create Warden Vale" type="event" x="224" y="144" width="16" height="16">
+      <properties>
+        <property name="cond1" value="not char_exists custom_ascent_4" />
+        <property name="act1" value="create_npc custom_ascent_4,14,9,stand" />
+      </properties>
+    </object>
+    <object id="19" name="Talk Warden Vale" type="event" x="224" y="144" width="16" height="16">
+      <properties>
+        <property name="cond1" value="is char_facing_tile player" />
+        <property name="cond2" value="is button_pressed INTERACT" />
+        <property name="act1" value="custom_conversation 4" />
+      </properties>
+    </object>
+  </objectgroup>
+</map>

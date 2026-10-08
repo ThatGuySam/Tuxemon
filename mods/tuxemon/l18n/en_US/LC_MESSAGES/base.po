@@ -19269,3 +19269,16 @@ msgstr "Town Hall"
 
 msgid "flower_lady"
 msgstr "Flower Lady"
+
+# Opt-in Last Ascent scenario quest items.
+msgid "custom_aid_kit"
+msgstr "Expedition aid kit"
+
+msgid "custom_crystal"
+msgstr "Expedition crystal"
+
+msgid "custom_permit"
+msgstr "Summit permit"
+
+msgid "custom_supply_pack"
+msgstr "One supply pack"

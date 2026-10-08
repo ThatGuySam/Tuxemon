@@ -1,0 +1,6 @@
+Hit:1 https://deb.debian.org/debian trixie InRelease
+Hit:2 https://deb.debian.org/debian trixie-updates InRelease
+Hit:3 https://security.debian.org/debian-security trixie-security InRelease
+Reading package lists...
+W: Unable to read /etc/apt/apt.conf.d/80-applied-apt-retries - open (13: Permission denied)
+W: Unable to read /etc/apt/apt.conf.d/80-applied-apt-retries - open (13: Permission denied)

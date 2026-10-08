@@ -21,6 +21,7 @@ def main(
     config: TuxemonConfig,
     context: DisplayContext,
     load_slot: int | None = None,
+    custom_game: bool = False,
 ) -> None:
     """
     Initialize and launch the game using a local Pygame client.
@@ -34,7 +35,11 @@ def main(
     client = LocalPygameClient.create(config, context)
     local_session.set_client(client)
 
-    configure_game_states(client, config, load_slot)
+    if custom_game:
+        from tuxemon.custom_game.runtime import launch
+        launch(client)
+    else:
+        configure_game_states(client, config, load_slot)
 
     if config.collision_map:
         configure_debug_options(client)

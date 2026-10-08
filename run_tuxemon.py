@@ -55,6 +55,8 @@ def build_parser() -> ArgumentParser:
         help="Run in headless mode (no graphical interface).",
     )
 
+    parser.add_argument("--custom-game", action="store_true",
+                        help="Play the opt-in Last Ascent conversation scenario")
     return parser
 
 
@@ -146,7 +148,8 @@ def launch_game(argv: list[str] | None = None) -> None:
             tuxemon_main.headless(config=config, context=context)
         else:
             tuxemon_main.main(
-                config=config, context=context, load_slot=args.slot
+                config=config, context=context, load_slot=args.slot,
+                custom_game=args.custom_game
             )
 
     except Exception as e:

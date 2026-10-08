@@ -1,0 +1,12 @@
+{
+  "entrypoint": "run_tuxemon.launch_game",
+  "argv": [],
+  "states": [
+    "SplashState",
+    "IntroState",
+    "BackgroundState"
+  ],
+  "frames": 100,
+  "render": "SDL Pygame actual client",
+  "inference": "none"
+}
