@@ -63,12 +63,22 @@ class Broker:
     """Classify against authored labels; inference never mutates game state."""
 
     def __init__(
-        self, content: dict, picker=None, provider="authored", model=None
+        self,
+        content: dict,
+        picker=None,
+        provider="authored",
+        model=None,
+        ollama_url="http://127.0.0.1:11434",
     ):
         self.scenarios = content["npcs"]
+        self.ollama_url = ollama_url
+        if provider == "ollama":
+            from .providers import OllamaProvider
+
+            OllamaProvider(model, ollama_url)
         self.picker, self.provider, self.model = picker, provider, model
-        if provider == "ollama" and not model:
-            raise ValueError("Ollama requires an explicit model")
+        if provider in ("ollama", "chatgpt") and not model:
+            raise ValueError("Select an explicit model for this provider")
 
     def run(self, turn: Turn) -> Result:
         if not 0 <= turn.scenario < len(self.scenarios):
@@ -115,7 +125,7 @@ class Broker:
                 turn, options[index]["text"], index, PICKER, **receipt
             )
         if turn.operation == COMPOSE:
-            if self.provider != "ollama":
+            if self.provider not in ("ollama", "chatgpt"):
                 return Result(turn, turn.text)
             method_instruction = {
                 0: "The draft contains a selected intent, topic and stance.",
@@ -138,8 +148,18 @@ class Broker:
                 f"NPC: {scene.get('name', 'NPC')}\nBackground: {scene.get('opening', '')}\n"
                 f"Relevant actions: {actions}\nInput method: {method_instruction}\nDraft: {turn.text}"
             )
+            if self.provider == "chatgpt":
+                from .providers import ChatGPTProvider
+
+                text = ChatGPTProvider(self.model).generate(prompt, raw=True)
+                ascii_bytes(text, TEXT_LIMIT)
+                if not text.strip():
+                    raise ValueError("Empty model response")
+                return Result(
+                    turn, text, source=GENERATOR, model_id=self.model
+                )
             request = Request(
-                "http://127.0.0.1:11434/api/generate",
+                self.ollama_url + "/api/generate",
                 data=json.dumps(
                     {
                         "model": self.model,
@@ -156,7 +176,7 @@ class Broker:
                 data = json.loads(response.read(65537))
             if data.get("done") is not True:
                 raise ValueError("Incomplete model response")
-            text = " ".join(data["response"].split())
+            text = data["response"]
             ascii_bytes(text, TEXT_LIMIT)
             if not text:
                 raise ValueError("Empty model response")

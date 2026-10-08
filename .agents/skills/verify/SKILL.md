@@ -1,11 +1,13 @@
 ---
 name: verify
-description: Drive and verify the Tuxemon Chromatic conversation playground ROM through real PyBoy button input. Use for screen blinking, menu/editor changes, game progression, or paired-host regressions in chromatic_demo.
+description: Verify the Chromatic terminal through real PTY keyboard input or the ROM through real PyBoy buttons. Use for menu/editor regressions, input methods, quest progression, or live Ollama checks in chromatic_demo.
 ---
 
 # Verify the Chromatic Playground
 
-This skill drives the compiled Game Boy Color ROM, not the full desktop Tuxemon engine. Read [the feature map](features/README.md) before selecting a path. The primary surface is the 160 by 144 ROM screen; the Mac companion is secondary. Physical Chromatic display and USB control forwarding require separate observations.
+For the Mac terminal adaptation, use [Terminal Interface](features/terminal.md): its launch, doctor, drive, evidence and cleanup steps use the real curses executable in isolated PTYs. This path needs no ROM build or device.
+
+The remaining instructions drive the compiled Game Boy Color ROM, not the full desktop Tuxemon engine. Read [the feature map](features/README.md) before selecting a path. The primary surface is the 160 by 144 ROM screen; the Mac companion is secondary. Physical Chromatic display and USB control forwarding require separate observations.
 
 ## Launch
 

@@ -41,6 +41,7 @@ test = [
     "pytest",
     "pytest-mock",
     "pytest-cov",
+    "pyte==0.8.2",
 ]
 dev = [
     "tuxemon[test]",

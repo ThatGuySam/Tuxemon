@@ -1,5 +1,6 @@
 # Conversation Playground
 
+For a regular Mac terminal with all nine input methods, quick keyboard entry, and Ollama or ChatGPT drafting, see [Mac Text Playground](TERMINAL.md).
 The Last Ascent is a walkable, authored late-game story with four areas, five NPCs, and 30 dialogue outcomes. It lets you compare nine conversation interfaces in the same quest state. It is original game fiction, not canonical Tuxemon endgame. Rockitten's Earth type comes from the fork's English translation source. New locations, characters, duties, and dialogue are authored fiction.
 
 The playable areas are Summit Camp, Supply Terrace, Echo Ravine, and Crown Approach. Walk east or west through their boundary paths to move between them. The Professor prepares your tactics; the Quartermaster trades supplies; Tracker Iona checks a rare creature clue; Medic Ren handles an injured scout; Warden Vale controls trial entry.

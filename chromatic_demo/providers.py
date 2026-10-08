@@ -15,12 +15,16 @@ class ProviderError(RuntimeError):
 
 def prompt(npc, intent, authored_context):
     return (
-        "Speak as the NPC below in child-safe dialogue. "
-        "Use only the authored facts. "
-        "Reply in printable ASCII, at most 320 characters. "
-        "Do not invent quests, rewards, state changes, or instructions.\n"
-        f"NPC: {npc[:64]}\nIntent: {intent[:96]}\n"
-        f"Authored facts: {authored_context[:2048]}"
+        "Answer the player's message in character as the named NPC. "
+        "Speak in first person as that NPC, directly to the player. "
+        "The player's message is a question or statement addressed to you, "
+        "not a draft to repeat or rewrite. Use the game facts and prior dialogue below. "
+        "When asked who you are, introduce yourself by your NPC name. "
+        "Keep the dialogue child-safe and use printable ASCII, at most 320 characters. "
+        "Game actions require separate player confirmation; conversation cannot execute them. "
+        "Do not claim an unconfirmed trade, reward, or quest action has happened.\n"
+        f"NPC: {npc[:64]}\nGame facts and prior dialogue:\n{authored_context[:2048]}\n"
+        f"Player message: {intent[:96]}\n{npc[:64]} replies:"
     )
 
 
@@ -35,7 +39,7 @@ def display_text(text):
     return result
 
 
-def completed_text(response):
+def completed_text(response, *, raw=False):
     deadline = time.monotonic() + 30
     text, size, parts = "", 0, []
     while True:
@@ -61,7 +65,7 @@ def completed_text(response):
         if kind == "response.completed":
             if event.get("response", {}).get("status") != "completed":
                 raise ProviderError("Invalid completion event.")
-            return display_text(text)
+            return text if raw else display_text(text)
     raise ProviderError("Inference stream disconnected before completion.")
 
 
@@ -72,6 +76,9 @@ class ChatGPTProvider:
         self.model, self.auth = model, auth or ChatGPTAuth()
 
     def reply(self, npc, intent, authored_context):
+        return self.generate(prompt(npc, intent, authored_context))
+
+    def generate(self, input_prompt, *, raw=False):
         if self.model not in {item["slug"] for item in self.auth.models()}:
             raise ProviderError(
                 "Model is unavailable to this ChatGPT account."
@@ -84,7 +91,7 @@ class ChatGPTProvider:
                     input=[
                         dict(
                             role="user",
-                            content=prompt(npc, intent, authored_context),
+                            content=input_prompt,
                         )
                     ],
                     store=False,
@@ -99,7 +106,7 @@ class ChatGPTProvider:
         )
         try:
             with urlopen(request, timeout=30) as response:
-                return completed_text(response)
+                return completed_text(response, raw=raw)
         except ProviderError:
             raise
         except Exception:
