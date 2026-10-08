@@ -1,0 +1,578 @@
+--- a/main/main.c
++++ b/main/main.c
+@@ -36,6 +36,9 @@
+ #include "settings.h"
+ #include "silent.h"
+ #include "pwrmgr.h"
++#ifdef CONFIG_TUXEMON_CONNECTED_DEMO
++#include "connected_demo.h"
++#endif
+ 
+ enum {
+     kLVGL_TickPeriod_us = 1000u, // 1 millisecond
+@@ -348,6 +351,9 @@
+ 
+     ESP_ERROR_CHECK(esp_console_new_repl_uart(&ReplHWConfig, &ReplConfig, &pRepl));
+     esp_console_register_help_command();
++#ifdef CONFIG_TUXEMON_CONNECTED_DEMO
++    ConnectedDemo_Initialize();
++#endif
+     // All commands must be registered prior to starting the REPL
+     ESP_ERROR_CHECK(esp_console_start_repl(pRepl));
+ 
+--- a/main/gfx.c
++++ b/main/gfx.c
+@@ -1,6 +1,9 @@
+ #include "gfx.h"
+ 
+ #include "osd.h"
++#ifdef CONFIG_TUXEMON_CONNECTED_DEMO
++#include "connected_demo.h"
++#endif
+ 
+ static lv_style_t Background;
+ static lv_obj_t *pDisplayObj;
+@@ -19,6 +22,9 @@
+     TimerCtx_t *timer_ctx = (TimerCtx_t *) timer->user_data;
+     lv_obj_t *pScreen = timer_ctx->pScreen;
+ 
++#ifdef CONFIG_TUXEMON_CONNECTED_DEMO
++    if (ConnectedDemo_Draw(pScreen)) { return; }
++#endif
+     OSD_HandleInputs();
+     OSD_Draw(pScreen);
+ }
+--- a/main/pwrmgr.c
++++ b/main/pwrmgr.c
+@@ -66,6 +66,10 @@
+     {
+         if (ulTaskNotifyTake(pdTRUE, portMAX_DELAY))
+         {
++#ifdef CONFIG_TUXEMON_CONNECTED_DEMO
++            // Experimental firmware stays awake; preserve FPGA and OSD state.
++            continue;
++#endif
+             // Pause both tasks to ensure that they finish up any work in progress. Since the Sleep task is of higher priority,
+             // the delays below are taken advantage of to permit a context switch.
+             FPGA_Tx_Pause();
+--- a/main/CMakeLists.txt
++++ b/main/CMakeLists.txt
+@@ -1,11 +1,16 @@
+ cmake_minimum_required(VERSION 3.22)
++
++set(demo_sources "")
++if(CONFIG_TUXEMON_CONNECTED_DEMO)
++    list(APPEND demo_sources "connected_demo.c")
++endif()
+ 
+ idf_component_register(
+     SRCS
+-        "main.c" "gfx.c" "fpga_tx.c" "fpga_rx.c" "fpga_common.c" "pwrmgr.c"
++        "main.c" "gfx.c" "fpga_tx.c" "fpga_rx.c" "fpga_common.c" "pwrmgr.c" ${demo_sources}
+     INCLUDE_DIRS "."
+     REQUIRES
+         images esp_driver_uart esp_driver_spi esp_driver_gpio nvs_flash fatfs
+         common battery button osd menu_mgr settings mutex
+-        console crc
++        console crc esp_wifi esp_netif esp_event esp_http_client json
+ )
+--- a/main/Kconfig.projbuild
++++ b/main/Kconfig.projbuild
+@@ -6,3 +6,11 @@
+ 		The Major.Minor pair which describes a Chromatic firmware release package.
+ 		It shall be updated any time the Chromatic microcontroller or FPGA is revised.
+ endmenu
++
++config TUXEMON_CONNECTED_DEMO
++	bool "Build the experimental connected Tuxemon NPC panel"
++	default n
++	help
++		Adds opt-in serial provisioning, Wi-Fi, and a certificate-validated
++		HTTPS companion client. No radio or panel starts automatically.
++		Hardware behavior and RF performance need separate verification.
+--- /dev/null
++++ b/main/connected_demo.c
+@@ -0,0 +1,451 @@
++// SPDX-License-Identifier: GPL-3.0-or-later
++#include "connected_demo.h"
++
++#include "button.h"
++#include "cJSON.h"
++#include "driver/uart.h"
++#include "esp_console.h"
++#include "esp_event.h"
++#include "esp_http_client.h"
++#include "esp_netif.h"
++#include "esp_netif_sntp.h"
++#include "esp_random.h"
++#include "esp_wifi.h"
++#include "freertos/FreeRTOS.h"
++#include "freertos/event_groups.h"
++#include "freertos/queue.h"
++#include "freertos/task.h"
++#include "osd.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++enum { kTextSize = 321, kConfigPacketSize = 6144, kConnected = 1, kDisconnected = 2 };
++typedef struct {
++    char SSID[33];
++    char Password[65];
++    char Endpoint[193];
++    char Secret[129];
++    char Certificate[2049];
++} DemoConfig_t;
++typedef enum { kScan, kConnect, kDisconnect, kDialogue } DemoAction_t;
++typedef struct { DemoAction_t Action; uint32_t Generation; uint8_t Intent; } DemoRequest_t;
++typedef struct { uint32_t Generation; bool FromCompanion; char Text[kTextSize]; } DemoReply_t;
++typedef struct { char Bytes[2048]; size_t Length; bool Overflow; } HTTPReply_t;
++
++static const char *const Intents[] = { "greet", "rockitten", "farewell" };
++static const char *const Offline[] = {
++    "Professor: Ah, yes. The very person I've been wanting to meet. I've heard that you want to learn about Tuxemon.",
++    "Professor: A superb choice! Rockitten is an earth Tuxemon.",
++    "Professor: I hope to see you around! I'm about to head on a journey, so maybe we'll meet up sometime."
++};
++static DemoConfig_t Config;
++static QueueHandle_t Requests, Replies;
++static EventGroupHandle_t NetworkEvents;
++static portMUX_TYPE StateLock = portMUX_INITIALIZER_UNLOCKED;
++static bool Enabled, Busy, NetworkRunning, Initialized, Configuring, ClockStarted, ClockValidated;
++static uint32_t Generation;
++static uint8_t Selected;
++static lv_obj_t *Panel, *Title, *Label, *Footer;
++static char DisplayText[kTextSize] = "Press A to talk. Up/Down chooses an intent. B closes this panel.";
++static bool DisplayFromCompanion;
++static size_t PageStart, PageNext;
++static bool RequestOnA = true;
++
++static void SetEnabled(bool Next)
++{
++    portENTER_CRITICAL(&StateLock);
++    const bool Changed = Enabled != Next;
++    Enabled = Next;
++    Generation++;
++    portEXIT_CRITICAL(&StateLock);
++    if (Changed) { Button_ResetAll(); }
++}
++
++static bool QueueAction(DemoAction_t Action)
++{
++    portENTER_CRITICAL(&StateLock);
++    if (Busy || Configuring) { portEXIT_CRITICAL(&StateLock); return false; }
++    Busy = true;
++    const DemoRequest_t Request = { Action, Generation, Selected };
++    portEXIT_CRITICAL(&StateLock);
++    if (xQueueSend(Requests, &Request, 0) == pdPASS) { return true; }
++    portENTER_CRITICAL(&StateLock);
++    Busy = false;
++    portEXIT_CRITICAL(&StateLock);
++    return false;
++}
++
++static void NetworkEvent(void *Arg, esp_event_base_t Base, int32_t ID, void *Data)
++{
++    (void)Arg; (void)Data;
++    if (Base == IP_EVENT && ID == IP_EVENT_STA_GOT_IP) {
++        xEventGroupClearBits(NetworkEvents, kDisconnected);
++        xEventGroupSetBits(NetworkEvents, kConnected);
++    } else if (Base == WIFI_EVENT && ID == WIFI_EVENT_STA_DISCONNECTED) {
++        portENTER_CRITICAL(&StateLock); ClockValidated = false; portEXIT_CRITICAL(&StateLock);
++        xEventGroupClearBits(NetworkEvents, kConnected);
++        xEventGroupSetBits(NetworkEvents, kDisconnected);
++    }
++}
++
++static esp_err_t StartNetwork(void)
++{
++    if (!Initialized) {
++        esp_err_t Error = esp_netif_init();
++        if (Error != ESP_OK) { return Error; }
++        Error = esp_event_loop_create_default();
++        if (Error != ESP_OK && Error != ESP_ERR_INVALID_STATE) { return Error; }
++        if (!esp_netif_create_default_wifi_sta()) { return ESP_ERR_NO_MEM; }
++        const wifi_init_config_t Init = WIFI_INIT_CONFIG_DEFAULT();
++        if ((Error = esp_wifi_init(&Init)) != ESP_OK) { return Error; }
++        if ((Error = esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, NetworkEvent, NULL)) != ESP_OK) { return Error; }
++        if ((Error = esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, NetworkEvent, NULL)) != ESP_OK) { return Error; }
++        Initialized = true;
++    }
++    if (NetworkRunning) { return ESP_OK; }
++    esp_err_t Error = esp_wifi_set_storage(WIFI_STORAGE_RAM);
++    if (Error == ESP_OK) { Error = esp_wifi_set_mode(WIFI_MODE_STA); }
++    if (Error == ESP_OK) { Error = esp_wifi_start(); }
++    if (Error == ESP_OK) {
++        portENTER_CRITICAL(&StateLock); NetworkRunning = true; portEXIT_CRITICAL(&StateLock);
++    }
++    return Error;
++}
++
++static esp_err_t ReceiveHTTP(esp_http_client_event_t *Event)
++{
++    HTTPReply_t *Reply = Event->user_data;
++    if (Event->event_id == HTTP_EVENT_ON_DATA) {
++        if (Event->data_len < 0 || Reply->Length + Event->data_len >= sizeof(Reply->Bytes)) {
++            Reply->Overflow = true;
++            return ESP_FAIL;
++        }
++        memcpy(Reply->Bytes + Reply->Length, Event->data, Event->data_len);
++        Reply->Length += Event->data_len;
++        Reply->Bytes[Reply->Length] = '\0';
++    }
++    return ESP_OK;
++}
++
++static bool Printable(const char *Text, size_t Maximum)
++{
++    if (!Text || !*Text || strlen(Text) > Maximum) { return false; }
++    for (const unsigned char *Byte = (const unsigned char *)Text; *Byte; Byte++) {
++        if (*Byte < 32 || *Byte > 126) { return false; }
++    }
++    return true;
++}
++
++static bool ValidConfig(const DemoConfig_t *Value)
++{
++    if (strnlen(Value->SSID, sizeof(Value->SSID)) >= sizeof(Value->SSID) ||
++        strnlen(Value->Password, sizeof(Value->Password)) >= sizeof(Value->Password) ||
++        strnlen(Value->Endpoint, sizeof(Value->Endpoint)) >= sizeof(Value->Endpoint) ||
++        strnlen(Value->Secret, sizeof(Value->Secret)) >= sizeof(Value->Secret) ||
++        strnlen(Value->Certificate, sizeof(Value->Certificate)) >= sizeof(Value->Certificate)) { return false; }
++    return Value->SSID[0] && strlen(Value->Secret) >= 16 &&
++        Printable(Value->Secret, sizeof(Value->Secret) - 1) &&
++        Printable(Value->Endpoint, sizeof(Value->Endpoint) - 1) &&
++        strncmp(Value->Endpoint, "https://", 8) == 0 &&
++        strstr(Value->Endpoint, "/v1/dialogue") &&
++        strstr(Value->Certificate, "-----BEGIN CERTIFICATE-----");
++}
++
++static void FetchDialogue(const DemoRequest_t *Request, DemoReply_t *Reply)
++{
++    snprintf(Reply->Text, sizeof(Reply->Text), "%s", Offline[Request->Intent]);
++    portENTER_CRITICAL(&StateLock);
++    const bool ValidatedTime = ClockValidated;
++    portEXIT_CRITICAL(&StateLock);
++    if (!(xEventGroupGetBits(NetworkEvents) & kConnected) || !Config.Endpoint[0] || !ValidatedTime) { return; }
++    char ID[17], Body[96], Authorization[137];
++    snprintf(ID, sizeof(ID), "%08lx%08lx", (unsigned long)esp_random(), (unsigned long)esp_random());
++    snprintf(Body, sizeof(Body), "{\"request_id\":\"%s\",\"intent\":\"%s\"}", ID, Intents[Request->Intent]);
++    snprintf(Authorization, sizeof(Authorization), "Bearer %s", Config.Secret);
++    HTTPReply_t *Response = calloc(1, sizeof(*Response));
++    if (!Response) { return; }
++    const esp_http_client_config_t HTTP = {
++        .url = Config.Endpoint, .method = HTTP_METHOD_POST, .timeout_ms = 10000,
++        .cert_pem = Config.Certificate, .event_handler = ReceiveHTTP, .user_data = Response,
++        .disable_auto_redirect = true, .buffer_size = 512, .buffer_size_tx = 512
++    };
++    esp_http_client_handle_t Client = esp_http_client_init(&HTTP);
++    if (!Client) { free(Response); return; }
++    esp_http_client_set_header(Client, "Content-Type", "application/json");
++    esp_http_client_set_header(Client, "Authorization", Authorization);
++    esp_http_client_set_post_field(Client, Body, strlen(Body));
++    const esp_err_t Error = esp_http_client_perform(Client);
++    const int Status = esp_http_client_get_status_code(Client);
++    if (Error == ESP_OK && Status == 200 && !Response->Overflow) {
++        cJSON *Object = cJSON_ParseWithLength(Response->Bytes, Response->Length + 1);
++        const cJSON *ReturnedID = cJSON_GetObjectItemCaseSensitive(Object, "request_id");
++        const cJSON *Text = cJSON_GetObjectItemCaseSensitive(Object, "text");
++        if (cJSON_IsString(ReturnedID) && strcmp(ReturnedID->valuestring, ID) == 0 &&
++            cJSON_IsString(Text) && Printable(Text->valuestring, kTextSize - 1)) {
++            snprintf(Reply->Text, sizeof(Reply->Text), "%s", Text->valuestring);
++            Reply->FromCompanion = true;
++        }
++        cJSON_Delete(Object);
++    }
++    esp_http_client_cleanup(Client);
++    memset(Authorization, 0, sizeof(Authorization));
++    free(Response);
++}
++
++static void Worker(void *Arg)
++{
++    (void)Arg;
++    DemoRequest_t Request;
++    while (xQueueReceive(Requests, &Request, portMAX_DELAY) == pdPASS) {
++        DemoReply_t Reply = { .Generation = Request.Generation };
++        esp_err_t Error = ESP_OK;
++        if (Request.Action == kDisconnect) {
++            if (NetworkRunning) { Error = esp_wifi_stop(); }
++            if (Error == ESP_OK) {
++                if (ClockStarted) { esp_netif_sntp_deinit(); ClockStarted = false; }
++                portENTER_CRITICAL(&StateLock);
++                NetworkRunning = false; ClockValidated = false;
++                portEXIT_CRITICAL(&StateLock);
++                xEventGroupClearBits(NetworkEvents, kConnected | kDisconnected);
++            }
++            snprintf(Reply.Text, sizeof(Reply.Text), "Network stopped. Authored dialogue is available.");
++        } else if (Request.Action == kDialogue) {
++            FetchDialogue(&Request, &Reply);
++        } else {
++            Error = StartNetwork();
++            if (Error == ESP_OK && Request.Action == kScan) {
++                Error = esp_wifi_scan_start(NULL, true);
++                uint16_t Count = 0;
++                if (Error == ESP_OK) { Error = esp_wifi_scan_get_ap_num(&Count); }
++                snprintf(Reply.Text, sizeof(Reply.Text), "Wi-Fi scan completed: %u access points.", Count);
++                esp_wifi_clear_ap_list();
++            } else if (Error == ESP_OK && Request.Action == kConnect) {
++                portENTER_CRITICAL(&StateLock); ClockValidated = false; portEXIT_CRITICAL(&StateLock);
++                wifi_config_t Station = {0};
++                memcpy(Station.sta.ssid, Config.SSID, strlen(Config.SSID));
++                memcpy(Station.sta.password, Config.Password, strlen(Config.Password));
++                xEventGroupClearBits(NetworkEvents, kConnected | kDisconnected);
++                Error = esp_wifi_set_config(WIFI_IF_STA, &Station);
++                memset(&Station, 0, sizeof(Station));
++                if (Error == ESP_OK) { Error = esp_wifi_connect(); }
++                const EventBits_t Bits = Error == ESP_OK ? xEventGroupWaitBits(NetworkEvents,
++                    kConnected | kDisconnected, pdFALSE, pdFALSE, pdMS_TO_TICKS(15000)) : 0;
++                if (Bits & kConnected) {
++                    if (!ClockStarted) {
++                        const esp_sntp_config_t Clock = ESP_NETIF_SNTP_DEFAULT_CONFIG("time.cloudflare.com");
++                        ClockStarted = esp_netif_sntp_init(&Clock) == ESP_OK;
++                    }
++                    const bool Synced = ClockStarted && esp_netif_sntp_sync_wait(pdMS_TO_TICKS(5000)) == ESP_OK;
++                    portENTER_CRITICAL(&StateLock); ClockValidated = Synced; portEXIT_CRITICAL(&StateLock);
++                }
++                snprintf(Reply.Text, sizeof(Reply.Text), "%s", Bits & kConnected ?
++                    "Connected. Press A to request dialogue." : "Connection failed or timed out. Authored dialogue remains available.");
++            }
++        }
++        if (Error != ESP_OK) { snprintf(Reply.Text, sizeof(Reply.Text), "Operation failed (%d). No automatic retry.", Error); }
++        xQueueOverwrite(Replies, &Reply);
++        portENTER_CRITICAL(&StateLock); Busy = false; portEXIT_CRITICAL(&StateLock);
++        printf("tuxemon operation settled (%d)\r\n", Error);
++    }
++}
++
++static int DemoCommand(int Argc, char **Argv)
++{
++    if (Argc != 2 || (strcmp(Argv[1], "on") && strcmp(Argv[1], "off"))) { return ESP_ERR_INVALID_ARG; }
++    SetEnabled(strcmp(Argv[1], "on") == 0);
++    return ESP_OK;
++}
++
++static int NetworkCommand(int Argc, char **Argv)
++{
++    if (Argc != 2) { return ESP_ERR_INVALID_ARG; }
++    if (!strcmp(Argv[1], "scan")) { return QueueAction(kScan) ? ESP_OK : ESP_ERR_INVALID_STATE; }
++    if (!strcmp(Argv[1], "connect") && Config.SSID[0]) { return QueueAction(kConnect) ? ESP_OK : ESP_ERR_INVALID_STATE; }
++    if (!strcmp(Argv[1], "off")) { return QueueAction(kDisconnect) ? ESP_OK : ESP_ERR_INVALID_STATE; }
++    return ESP_ERR_INVALID_ARG;
++}
++
++static bool CopyField(cJSON *Object, const char *Key, char *Destination, size_t Size)
++{
++    const cJSON *Value = cJSON_GetObjectItemCaseSensitive(Object, Key);
++    if (!cJSON_IsString(Value) || strlen(Value->valuestring) >= Size) { return false; }
++    memcpy(Destination, Value->valuestring, strlen(Value->valuestring) + 1);
++    return true;
++}
++
++static int ConfigureCommand(int Argc, char **Argv)
++{
++    (void)Argv;
++    if (Argc != 1) { return ESP_ERR_INVALID_ARG; }
++    portENTER_CRITICAL(&StateLock);
++    if (Busy || NetworkRunning || Configuring) { portEXIT_CRITICAL(&StateLock); return ESP_ERR_INVALID_STATE; }
++    Configuring = true;
++    portEXIT_CRITICAL(&StateLock);
++    char *Packet = calloc(1, kConfigPacketSize);
++    DemoConfig_t *Next = calloc(1, sizeof(*Next));
++    esp_err_t Error = ESP_ERR_NO_MEM;
++    if (Packet && Next) {
++        printf("Send one JSON config line within 30 seconds. Input is not echoed or logged.\r\n");
++        size_t Length = 0;
++        const TickType_t Deadline = xTaskGetTickCount() + pdMS_TO_TICKS(30000);
++        bool Complete = false, Overflow = false;
++        while (xTaskGetTickCount() < Deadline) {
++            char Byte;
++            if (uart_read_bytes(CONFIG_ESP_CONSOLE_UART_NUM, &Byte, 1, pdMS_TO_TICKS(100)) == 1) {
++                if (Byte == '\n' || Byte == '\r') {
++                    if (Length > 0) { Complete = !Overflow; break; }
++                } else if (Length < kConfigPacketSize - 1) { Packet[Length++] = Byte; }
++                else { Overflow = true; }
++            }
++        }
++        cJSON *Object = Complete ? cJSON_Parse(Packet) : NULL;
++        const bool Valid = Object && CopyField(Object, "ssid", Next->SSID, sizeof(Next->SSID)) &&
++            CopyField(Object, "password", Next->Password, sizeof(Next->Password)) &&
++            CopyField(Object, "endpoint", Next->Endpoint, sizeof(Next->Endpoint)) &&
++            CopyField(Object, "pairing_secret", Next->Secret, sizeof(Next->Secret)) &&
++            CopyField(Object, "ca_pem", Next->Certificate, sizeof(Next->Certificate)) &&
++            ValidConfig(Next);
++        Error = ESP_ERR_INVALID_ARG;
++        if (Valid) {
++            Config = *Next;
++            Error = ESP_OK;
++        }
++        cJSON_Delete(Object);
++    }
++    char Discard[128];
++    for (size_t I = 0; I < 50; I++) {
++        if (uart_read_bytes(CONFIG_ESP_CONSOLE_UART_NUM, Discard, sizeof(Discard), pdMS_TO_TICKS(20)) <= 0) { break; }
++    }
++    uart_flush_input(CONFIG_ESP_CONSOLE_UART_NUM);
++    if (Packet) { memset(Packet, 0, kConfigPacketSize); free(Packet); }
++    if (Next) { memset(Next, 0, sizeof(*Next)); free(Next); }
++    portENTER_CRITICAL(&StateLock); Configuring = false; portEXIT_CRITICAL(&StateLock);
++    printf("Configuration finished (%d); credentials were not printed.\r\n", Error);
++    return Error;
++}
++
++static int ForgetCommand(int Argc, char **Argv)
++{
++    (void)Argv;
++    if (Argc != 1) { return ESP_ERR_INVALID_ARG; }
++    portENTER_CRITICAL(&StateLock);
++    if (Busy || NetworkRunning || Configuring) { portEXIT_CRITICAL(&StateLock); return ESP_ERR_INVALID_STATE; }
++    Configuring = true;
++    portEXIT_CRITICAL(&StateLock);
++    memset(&Config, 0, sizeof(Config));
++    portENTER_CRITICAL(&StateLock); Configuring = false; portEXIT_CRITICAL(&StateLock);
++    return ESP_OK;
++}
++
++static void RenderPage(void)
++{
++    if (!Label) { return; }
++    lv_obj_update_layout(Panel);
++    const lv_font_t *Font = lv_obj_get_style_text_font(Label, LV_PART_MAIN);
++    const lv_coord_t Width = lv_obj_get_content_width(Label);
++    const lv_coord_t Height = lv_obj_get_content_height(Label);
++    const lv_coord_t LetterSpace = lv_obj_get_style_text_letter_space(Label, LV_PART_MAIN);
++    const lv_coord_t LineSpace = lv_obj_get_style_text_line_space(Label, LV_PART_MAIN);
++    const size_t Remaining = strlen(DisplayText + PageStart);
++    char Page[kTextSize] = {0};
++    size_t Fitting = 0;
++    for (size_t Length = 1; Length <= Remaining; Length++) {
++        Page[Length - 1] = DisplayText[PageStart + Length - 1];
++        Page[Length] = '\0';
++        lv_point_t Size;
++        lv_txt_get_size(&Size, Page, Font, LetterSpace, LineSpace, Width, LV_TEXT_FLAG_NONE);
++        if (Size.y > Height) { break; }
++        Fitting = Length;
++    }
++    Page[Fitting] = '\0';
++    PageNext = PageStart + Fitting;
++    lv_label_set_text(Label, Page);
++    lv_label_set_text(Footer, PageNext < strlen(DisplayText) ? "A: next  B: close" : "A: ask  B: close");
++}
++
++static void SetDisplayText(const char *Text, bool FromCompanion, bool NewIntent)
++{
++    snprintf(DisplayText, sizeof(DisplayText), "%s", Text);
++    DisplayFromCompanion = FromCompanion;
++    PageStart = 0;
++    RequestOnA = NewIntent;
++    RenderPage();
++}
++
++bool ConnectedDemo_Draw(lv_obj_t *Screen)
++{
++    portENTER_CRITICAL(&StateLock);
++    const bool Show = Enabled;
++    const uint32_t CurrentGeneration = Generation;
++    portEXIT_CRITICAL(&StateLock);
++    if (!Show) {
++        if (Panel) { lv_obj_del(Panel); Panel = NULL; Title = NULL; Label = NULL; Footer = NULL; }
++        return false;
++    }
++    if (!Panel) {
++        Panel = lv_obj_create(Screen);
++        lv_obj_set_size(Panel, 160, 144);
++        lv_obj_set_pos(Panel, 0, 0);
++        lv_obj_set_style_bg_color(Panel, lv_color_hex(0x16202b), 0);
++        lv_obj_set_style_bg_opa(Panel, LV_OPA_COVER, 0);
++        lv_obj_set_style_pad_all(Panel, 5, 0);
++        lv_obj_set_style_border_width(Panel, 0, 0);
++        lv_obj_clear_flag(Panel, LV_OBJ_FLAG_SCROLLABLE);
++        Title = lv_label_create(Panel);
++        lv_obj_set_style_text_color(Title, lv_color_white(), 0);
++        Label = lv_label_create(Panel);
++        lv_obj_set_size(Label, 142, 90);
++        lv_obj_set_pos(Label, 0, 20);
++        lv_obj_set_style_text_color(Label, lv_color_white(), 0);
++        lv_label_set_long_mode(Label, LV_LABEL_LONG_WRAP);
++        Footer = lv_label_create(Panel);
++        lv_obj_set_pos(Footer, 0, 114);
++        lv_obj_set_style_text_color(Footer, lv_color_white(), 0);
++        RenderPage();
++    }
++    DemoReply_t Reply;
++    if (xQueueReceive(Replies, &Reply, 0) == pdPASS && Reply.Generation == CurrentGeneration) {
++        SetDisplayText(Reply.Text, Reply.FromCompanion, false);
++    }
++    if (OSD_IsVisible()) {
++        if (Button_GetState(kButton_Up) == kButtonState_Pressed) {
++            portENTER_CRITICAL(&StateLock); Selected = (Selected + 2) % 3; Generation++; portEXIT_CRITICAL(&StateLock);
++            SetDisplayText(Offline[Selected], false, true);
++        }
++        if (Button_GetState(kButton_Down) == kButtonState_Pressed) {
++            portENTER_CRITICAL(&StateLock); Selected = (Selected + 1) % 3; Generation++; portEXIT_CRITICAL(&StateLock);
++            SetDisplayText(Offline[Selected], false, true);
++        }
++        if (Button_GetState(kButton_A) == kButtonState_Pressed) {
++            if (!RequestOnA && PageNext < strlen(DisplayText)) {
++                PageStart = PageNext;
++                RenderPage();
++            } else if (QueueAction(kDialogue)) {
++                SetDisplayText("Asking... authored dialogue is available if the connection fails.", false, false);
++            }
++        }
++        if (Button_GetState(kButton_B) == kButtonState_Pressed) {
++            SetEnabled(false);
++        }
++    }
++    lv_label_set_text_fmt(Title, "%s (%s)", Intents[Selected], DisplayFromCompanion ? "host" : "offline");
++    return true;
++}
++
++void ConnectedDemo_Initialize(void)
++{
++    Requests = xQueueCreate(1, sizeof(DemoRequest_t));
++    Replies = xQueueCreate(1, sizeof(DemoReply_t));
++    NetworkEvents = xEventGroupCreate();
++    if (!Requests || !Replies || !NetworkEvents) { abort(); }
++    if (xTaskCreate(Worker, "tux_worker", 8192, NULL, 3, NULL) != pdPASS) { abort(); }
++    const esp_console_cmd_t Commands[] = {
++        { .command = "tux_demo", .help = "on/off: opt in to the connected NPC panel", .func = DemoCommand },
++        { .command = "tux_network", .help = "scan/connect/off: explicitly run one wireless operation", .func = NetworkCommand },
++        { .command = "tux_config", .help = "Provision bounded JSON without console echo; network must be off", .func = ConfigureCommand },
++        { .command = "tux_forget", .help = "Clear volatile prototype credentials; network must be off", .func = ForgetCommand }
++    };
++    for (size_t I = 0; I < sizeof(Commands) / sizeof(Commands[0]); I++) { ESP_ERROR_CHECK(esp_console_cmd_register(&Commands[I])); }
++}
+--- /dev/null
++++ b/main/connected_demo.h
+@@ -0,0 +1,7 @@
++// SPDX-License-Identifier: GPL-3.0-or-later
++#pragma once
++#include <stdbool.h>
++#include "lvgl.h"
++
++void ConnectedDemo_Initialize(void);
++bool ConnectedDemo_Draw(lv_obj_t *screen);
+--- /dev/null
++++ b/sdkconfig.demo.defaults
+@@ -0,0 +1,2 @@
++CONFIG_TUXEMON_CONNECTED_DEMO=y
++CONFIG_COMPILER_OPTIMIZATION_SIZE=y
+--- /dev/null
++++ b/sdkconfig.experimental.defaults
+@@ -0,0 +1,4 @@
++# EXPERIMENTAL BUILD ONLY. NOT APPROVED FOR DEVICE INSTALLATION.
++CONFIG_PARTITION_TABLE_CUSTOM=y
++CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.connected-demo.csv"
++CONFIG_MBEDTLS_HAVE_TIME_DATE=y
+--- /dev/null
++++ b/partitions.connected-demo.csv
+@@ -0,0 +1,7 @@
++# EXPERIMENTAL BUILD ONLY. NOT APPROVED FOR DEVICE INSTALLATION.
++# Requires a partition-table write; incompatible with the stock 1 MiB factory app.
++# Stock NVS and PHY offsets and sizes are preserved. No data partition is added.
++# Name, Type, SubType, Offset, Size, Flags
++nvs, data, nvs, 0x9000, 0x6000,
++phy_init, data, phy, 0xf000, 0x1000,
++factory, app, factory, 0x10000, 0x200000,

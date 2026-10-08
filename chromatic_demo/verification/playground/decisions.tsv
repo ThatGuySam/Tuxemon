@@ -1,0 +1,8 @@
+recorded_at_utc	decision	choice	evidence
+2026-10-05T21:53:48.483483+00:00	architecture	One native ROM owns world and guarded effects; an owned PyBoy bridge adds live model and paired draft input.	No documented live RAM callback in vendor USB play.
+2026-10-05T21:53:48.483483+00:00	content	Four connected areas, five NPCs, 30 outcomes, and an original late-game quest.	Authored fiction explicitly distinguished from canonical Tuxemon.
+2026-10-05T21:53:48.483483+00:00	input	Stable method IDs with keywords first in the visible ranking.	Design judgment, not measured user preference.
+2026-10-05T21:53:48.483483+00:00	review	Fixed completion bounds, draft loss, empty initials, companion collision, provenance coverage, fallback labeling, layout validation, and zero-length PyBoy reads.	Native buttons, 22 negative builder fixtures, 33 unit tests, and real model/HTTP round trips.
+2026-10-05T21:53:48.483483+00:00	quality	Retain advisory interpretation and explicit meaning confirmation.	Six of 25 authored current-config expected labels matched; scores uncalibrated.
+2026-10-05T21:53:48.483483+00:00	deployment	Completed 120-second USB stream and started owned Mac game.	Vendor operation settled successfully without cartridge write.
+2026-10-05T21:53:48.483483+00:00	authority	Leave cartridge flash pending and firmware uninstalled.	First-flash erase/save-loss acknowledgement unavailable; no MCU repartition authorization.
