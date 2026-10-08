@@ -57,7 +57,7 @@ Owner branch: codex/custom-tuxemon-cloud, isolated checkout /workspace/work/tuxe
 - A reconstructed scenario reads existing engine flags/items and does not reset
   them. Full disk save/resume and conversation persistence remain outside this
   verification claim; the separately authorized audit can inspect that area.
-- No push, merge, deployment, model provisioning, account credential reuse,
+- No main-branch push, merge, deployment, model provisioning, account credential reuse,
   hardware access or supplementary-task path edits were performed.
 
 - Existing gettext cache reproduction failed before the compiler fix. Invalidating
@@ -83,4 +83,13 @@ Owner branch: codex/custom-tuxemon-cloud, isolated checkout /workspace/work/tuxe
 - Reviewed screenshots, JUnit results, setup/test logs and a labeled evidence
   gallery are checked in under docs/custom-game/evidence.
 - Review package will include a binary-capable diff against the exact base.
-  It is delivered without a push, merge or deployment.
+  Delivery uses an authorized feature-branch push and draft PR, without a main push, merge or deployment.
+
+## Delivery decision
+
+The configured chat output path is absent on this managed executor's read-only
+root filesystem. Narrow filesystem capability attempts could not create it.
+Instead, use the user's explicitly authorized draft-PR delivery route. The
+complete source, report and rendered evidence are reviewable on the feature
+branch. A binary diff was applied to an exact-base worktree, whose resulting
+Git tree matched the implementation commit. Main remains untouched.
