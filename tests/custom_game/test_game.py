@@ -1,8 +1,12 @@
 """Actual engine input/render evidence. HTTP fixture is SYNTHETIC, not Ollama."""
 
 import json
+import os
+import subprocess
+import sys
 import threading
 import time
+from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -54,8 +58,8 @@ class SyntheticOllama(BaseHTTPRequestHandler):
         pass
 
 
-@pytest.fixture(scope="module")
-def game():
+@contextmanager
+def running_game():
     from tuxemon.prepare import pygame_init
 
     context = pygame_init()
@@ -79,6 +83,7 @@ def game():
     driver = Driver(client)
     driver.tick(100)
     yield driver
+    client.custom_scenario.close_persistence()
     client.network_manager.shutdown()
     pygame.quit()
 
@@ -315,6 +320,7 @@ def check_http_followup_cancellation_errors_and_drafts(game):
     game.key(pygame.K_RETURN)
     game.wait_reply()
     assert SyntheticOllama.requests[0]["messages"][-1]["content"] == exact
+    assert SyntheticOllama.requests[0]["think"] is False
     system = SyntheticOllama.requests[0]["messages"][0]["content"]
     assert (
         "You are Professor" in system and "Do not repeat or rewrite" in system
@@ -453,7 +459,11 @@ def check_real_npc_memory_and_guarded_engine_items(game):
     game.choose("Reset story")
     game.choose("Reset story, draft and all NPC conversations")
     assert model.flags == 0 and model.inventory == 3
-    assert not model.conversations and not model.npc_drafts and not model.draft
+    assert (
+        not model.conversations
+        and not any(model.npc_drafts.values())
+        and not model.draft
+    )
     game.capture("12-repeatable-reset")
 
 
@@ -524,22 +534,37 @@ def check_tracker_medic_warden(game):
     game.capture("16-engine-state-reconstruction")
 
 
-def test_actual_game_acceptance(game):
-    """A single complete player journey, without inter-test state dependencies."""
-    check_movement_npc_and_all_nine_editors(game)
-    check_http_followup_cancellation_errors_and_drafts(game)
-    check_real_npc_memory_and_guarded_engine_items(game)
-    check_tracker_medic_warden(game)
+def test_actual_game_acceptance(tmp_path):
+    root = Path(__file__).resolve().parents[2]
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(root / "scripts/cloud_game.py"),
+            "tests/custom_game/test_game.py",
+        ],
+        env={**os.environ, "TUXEMON_USERDATA": str(tmp_path)},
+        cwd=root,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
 
 
 @pytest.mark.parametrize(
     "endpoint, model",
     [
-        ("", "model"),
-        ("file:///tmp/model", "model"),
-        ("http://user:password@example.com", "model"),
-        ("https://example.com/api/chat", "model"),
-        ("https://example.com", ""),
+        pytest.param("", "model", id="missing-origin"),
+        pytest.param("file:///tmp/model", "model", id="file-origin"),
+        pytest.param(
+            "http://user:password@example.com",
+            "model",
+            id="embedded-credentials",
+        ),
+        pytest.param(
+            "https://example.com/api/chat", "model", id="path-origin"
+        ),
+        pytest.param("https://example.com", "", id="missing-model"),
     ],
 )
 def test_ollama_requires_explicit_origin_and_model(endpoint, model):
@@ -568,3 +593,11 @@ def test_translation_recompile_refreshes_existing_gettext_cache(tmp_path):
     compiler.compile_gettext(source, output)
     refreshed = translation("base", tmp_path / "l18n", ["en_US"])
     assert refreshed.gettext("custom_crystal") == "Expedition crystal"
+
+
+if __name__ == "__main__":
+    with running_game() as game:
+        check_movement_npc_and_all_nine_editors(game)
+        check_http_followup_cancellation_errors_and_drafts(game)
+        check_real_npc_memory_and_guarded_engine_items(game)
+        check_tracker_medic_warden(game)

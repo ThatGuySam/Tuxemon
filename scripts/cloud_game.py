@@ -10,7 +10,9 @@ os.chdir(root)
 sys.path.insert(0, str(root))
 from tuxemon.platform import platform
 
-storage = root / "work" / "userdata"
+storage = Path(
+    os.environ.get("TUXEMON_USERDATA", root / "work" / "userdata")
+).resolve()
 original_init = platform.init
 
 

@@ -164,6 +164,12 @@ class Session(AbstractSession["BaseClient"]):
         """
         Loads the player, world, and other session-level states from a saved game model.
         """
+        scenario = getattr(self.client, "custom_scenario", None)
+        if scenario is not None:
+            scenario.close_persistence()
+            del self.client.custom_scenario
+            if hasattr(self.client, "custom_conversation_store"):
+                del self.client.custom_conversation_store
         self.player.set_state(self, save_data.npc_state or NPCState())
         self.world.set_state(self, save_data.world_state or WorldSave())
         self.set_state(save_data.session_state or SessionSave())

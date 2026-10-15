@@ -42,6 +42,7 @@ test = [
     "pytest-mock",
     "pytest-cov",
     "pyte==0.8.2",
+    "PyJWT[crypto]==2.15.0",
 ]
 dev = [
     "tuxemon[test]",

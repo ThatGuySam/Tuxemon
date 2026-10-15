@@ -28,7 +28,8 @@ export TUXEMON_OLLAMA_URL=https://your-ollama-origin.example
 export TUXEMON_OLLAMA_MODEL=your-installed-model
 ```
 
-The adapter calls `/api/chat` with distinct system/NPC and player roles. It makes
+The adapter calls `/api/chat` with distinct system/NPC and player roles and
+disables thinking so local models produce the requested NPC answer directly. It makes
 no request until explicit Send. Missing configuration, HTTP/protocol errors and
 timeouts retain the draft. No account authentication, model purchase, automatic
 model download, player-draft generation or fake fallback is used. A remote service
@@ -67,19 +68,19 @@ PREVIEW displays a quoted representation of the exact outgoing draft, including
 spaces, names, punctuation, quantities and negation. Only the Send row requests
 an NPC reply. Back to editing changes no text. NPC replies page with left/right,
 while controls and Continue conversation remain visible. Replies are bounded to
-8192 characters and 64 KiB HTTP payloads. Requests have a 15-second deadline and
+8192 characters and 64 KiB HTTP payloads. Requests have a 60-second deadline and
 socket timeout. The deadline is checked between reads; a blocked read can take
 one further socket-timeout interval to finish. Cancellation invalidates the request immediately; the bounded
 network operation finishes in a daemon worker. Late results cannot overwrite a
 new draft or NPC conversation. A second worker is not launched while a cancelled
 request is still finishing, including after closing and reopening the overlay.
 
-Each NPC retains its own draft and up to 20 successful conversation turns for
-this client session. Follow-up prompts include bounded recent history and current
-authored quest facts. History and drafts are not persisted across game restart.
+Each NPC retains its own draft, input method and up to 20 successful conversation
+turns in the selected local custom profile. Follow-up prompts include bounded recent history and current
+authored quest facts. Completed turns and drafts survive restart. Pending requests never resume or resend.
 Start > Reset story explicitly clears story flags, scenario items, every NPC's
-history and drafts. It is repeatable and leaves campaign data outside this
-namespaced scenario alone.
+history, methods and drafts in the selected profile. It is repeatable and leaves other profiles and campaign data alone. If saving is
+disabled, reset clears only the current session and explicitly retains the saved file.
 
 Quest actions are a separate menu and confirmation, available even without a
 model. Sending prose changes no items or flags. Confirmation rechecks authored
@@ -147,3 +148,82 @@ loads an old catalog, recompiles it with a new scenario item name, then verifies
 the new translation. If you intentionally disable translation recompilation in
 an existing desktop config, run the translation preparation step before launching
 new source data. The cloud setup already does this in a separate process.
+
+## Verified Mac launch
+
+On macOS, use the same Python 3.12 setup and the installed local model:
+
+```sh
+export TUXEMON_OLLAMA_URL=http://127.0.0.1:11434
+export TUXEMON_OLLAMA_MODEL=gemma4:26b-mlx
+SDL_VIDEODRIVER=cocoa work/venv/bin/python scripts/cloud_game.py scripts/play-custom-game.py
+```
+
+`play-custom-game.py` launches the existing game with the custom scenario and
+multiplayer initialization disabled. It avoids the engine's default multiplayer
+port for this single-player demo. The storage wrapper keeps config and saves
+under this checkout's `work/userdata`.
+
+Run the real-model verification separately from the synthetic tests:
+
+```sh
+SDL_VIDEODRIVER=cocoa SDL_AUDIODRIVER=dummy work/venv/bin/python scripts/cloud_game.py scripts/verify-custom-game-live.py
+```
+
+This command opens a finite native window, walks to the Professor, selects a word
+with Return, switches to keyboard, previews and sends the exact message, and
+checks a real Ollama reply and name recall. It records screenshots and JSON under
+`work/live-evidence`. It sends requests to the explicitly configured model and
+does not download models. Failures return a nonzero exit status.
+
+The deterministic actual-game acceptance test runs in a child process so its
+loaded database, display scale and imported renderer state cannot leak into
+other tests. Its synthetic HTTP responses remain explicitly labeled.
+
+
+## Persistent custom profiles
+
+The launcher uses the `default` custom profile. Set `TUXEMON_CUSTOM_PROFILE` before
+launch to choose another profile, such as `cedar`. Names use 1-32 lowercase letters,
+digits, hyphens or underscores. These profiles are separate from campaign save slots.
+
+```sh
+TUXEMON_CUSTOM_PROFILE=cedar SDL_VIDEODRIVER=cocoa work/venv/bin/python scripts/cloud_game.py scripts/play-custom-game.py
+```
+
+Snapshots live under `work/userdata/saves/custom-last-ascent/<profile>.json` when
+using the repository storage wrapper. `TUXEMON_USERDATA` can select another storage
+root for isolated verification. The game autosaves valid draft edits, input-method
+changes and accepted completed replies. Stable authored NPC IDs preserve ownership.
+Restart returns to the camp and editing mode. It does not restore quest state,
+position, a waiting request, cursor, keyboard mode or editor gestures in progress.
+Loading a campaign slot detaches the custom profile and clears the custom runtime.
+
+The JSON format has an explicit schema and version. Writes use a unique adjacent
+temporary file, fsync and atomic replacement. A process lock prevents simultaneous
+writers to the same profile. Missing files start empty. Invalid, oversized, truncated,
+wrong-profile or unsupported-version files remain untouched. The game starts an
+empty session and visibly disables saving for that profile. It never silently
+substitutes another profile or downgrades an unknown version. Close the game and
+move the damaged file aside, or choose a new profile, to resume saving.
+
+Conversation files contain plain text, including player messages and NPC replies.
+On macOS, new save files and temporary files are owner-readable/writable only.
+There is no application cloud sync or encryption. Send still transmits the draft,
+authored facts and bounded recent history to the configured Ollama endpoint.
+Reset story clears the current valid profile's conversations. To delete the file,
+close all games using the profile and remove its JSON and any matching hidden
+`.<profile>-*.tmp` files left by an interrupted write. The empty `.lock` file holds
+no conversation text. This is ordinary deletion, not secure erasure.
+
+Run native restart verification with an unused evidence directory:
+
+```sh
+TUXEMON_OLLAMA_URL=http://127.0.0.1:11434 TUXEMON_OLLAMA_MODEL=gemma4:26b-mlx SDL_VIDEODRIVER=cocoa SDL_AUDIODRIVER=dummy work/venv/bin/python scripts/cloud_game.py scripts/verify-custom-game-persistence.py --live --output work/persistence-check
+```
+
+The command uses separate test profiles and nine sequential game processes. It makes
+two real model calls and uses a labeled synthetic fixture for quitting with a pending
+request. It checks exact drafts, methods, history, NPC/profile isolation, reset,
+damaged/future files and no automatic resend. The Windows lock backend is implemented
+with `msvcrt.locking`; Windows runtime verification remains outstanding.
