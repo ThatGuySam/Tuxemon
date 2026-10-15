@@ -1,0 +1,15 @@
+cffi==2.1.1
+cryptography==50.0.1
+iniconfig==2.3.0
+numpy==2.5.3
+packaging==26.3
+pillow==12.3.0
+pluggy==1.6.0
+pyboy==2.7.0
+pycparser==3.0
+pygments==2.21.0
+pyjwt==2.15.0
+pysdl2==0.9.17
+pysdl2-dll==2.32.10
+pytest==9.1.1
+ruff==0.16.9

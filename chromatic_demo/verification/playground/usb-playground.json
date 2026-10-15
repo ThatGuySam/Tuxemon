@@ -1,0 +1,16 @@
+{
+  "recorded_at_utc": "2026-10-05T21:51:49.467953+00:00",
+  "operation_id": "5dd7fa613069ddfe8df9aa6bf0371d348442ee6a0ef6665e94f923dec7a808db",
+  "selected_player": 1,
+  "rom_path": "/Users/athena/Code/Tuxemon/build/chromatic/playground/playground.gbc",
+  "size_bytes": 32768,
+  "rom_sha256": "0c5bf99c0d119bf2de354b60b2e5546a879c2091b46e0b00dc5f6b1f9bc1c58a",
+  "requested_seconds": 120,
+  "source": "host-emulation-streamed-to-Chromatic",
+  "state": "succeeded",
+  "success": true,
+  "completion": "vendor-reported-success-and-process-closed",
+  "cartridge_write": "not-dispatched",
+  "physical_display_independently_observed": false,
+  "evidence": "Original public operation status and completed USB runner journal under build/chromatic/playground/usb-playground-first.jsonl"
+}

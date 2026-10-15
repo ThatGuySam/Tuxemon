@@ -1,0 +1,19 @@
+{
+  "recorded_at_utc": "2026-10-05T18:37:54.937766+00:00",
+  "operation_id": "01f3b4d917ba90476dbe17ae7be33e5ddc4be778e2fdc17282415e5faf8ccb8e",
+  "state": "succeeded",
+  "success": true,
+  "source": "host-emulation-streamed-to-Chromatic",
+  "rom_sha256": "b347d799253cd731928453e6da3a79b3397eadfc900dc1aedf9823b63a9ae51f",
+  "rom_size_bytes": 32768,
+  "selected_player": 1,
+  "requested_seconds": 90,
+  "observed_vendor_seconds": 90.00152275,
+  "stop_reason": "duration_elapsed",
+  "completion": "vendor-reported-success-and-process-closed",
+  "cartridge_write": "not-dispatched",
+  "save_mode": "none",
+  "physical_screen_observed": false,
+  "physical_controls_observed": false,
+  "firmware_replaced": false
+}

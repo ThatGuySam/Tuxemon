@@ -1,0 +1,660 @@
+{
+  "recorded_at_utc": "2026-10-05T21:41:46.394324+00:00",
+  "provenance": "Real pinned local GLiClass inference on 25 authored development fixtures, not a held-out accuracy benchmark or user study.",
+  "labels_source": "canonical world classifier_label descriptions",
+  "results": [
+    {
+      "case_index": 0,
+      "npc_id": 0,
+      "input": "How should I prepare Rockitten, my Earth companion?",
+      "authored_expected_label": "earth_plan",
+      "result": {
+        "label": "earth_plan",
+        "model_label": "earth_plan",
+        "scores": {
+          "earth_plan": 0.9820997714996338,
+          "safe_plan": 0.8491851687431335,
+          "rush_trial": 0.08373423665761948,
+          "type_correction": 0.3956329822540283,
+          "epilogue": 0.0812704935669899,
+          "prof_unknown": 0.5366687178611755
+        },
+        "abstain_score": null,
+        "confidence": 0.9820997714996338,
+        "margin": 0.13291460275650024,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": true
+    },
+    {
+      "case_index": 1,
+      "npc_id": 0,
+      "input": "Give me a safe route and a preparation plan.",
+      "authored_expected_label": "safe_plan",
+      "result": {
+        "label": null,
+        "model_label": "earth_plan",
+        "scores": {
+          "earth_plan": 0.9823978543281555,
+          "safe_plan": 0.9789519309997559,
+          "rush_trial": 0.03788867965340614,
+          "type_correction": 0.3334297239780426,
+          "epilogue": 0.07594279944896698,
+          "prof_unknown": 0.2303737848997116
+        },
+        "abstain_score": null,
+        "confidence": 0.9823978543281555,
+        "margin": 0.003445923328399658,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 2,
+      "npc_id": 0,
+      "input": "Let us rush directly to the trial.",
+      "authored_expected_label": "rush_trial",
+      "result": {
+        "label": "earth_plan",
+        "model_label": "earth_plan",
+        "scores": {
+          "earth_plan": 0.9213920831680298,
+          "safe_plan": 0.8317991495132446,
+          "rush_trial": 0.4481450617313385,
+          "type_correction": 0.6636630296707153,
+          "epilogue": 0.19406521320343018,
+          "prof_unknown": 0.5869133472442627
+        },
+        "abstain_score": null,
+        "confidence": 0.9213920831680298,
+        "margin": 0.08959293365478516,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 3,
+      "npc_id": 0,
+      "input": "Rockitten is Earth, not Water. Correct that.",
+      "authored_expected_label": "type_correction",
+      "result": {
+        "label": "type_correction",
+        "model_label": "type_correction",
+        "scores": {
+          "earth_plan": 0.6989070177078247,
+          "safe_plan": 0.7096826434135437,
+          "rush_trial": 0.3032900393009186,
+          "type_correction": 0.9928174018859863,
+          "epilogue": 0.16599556803703308,
+          "prof_unknown": 0.47298794984817505
+        },
+        "abstain_score": null,
+        "confidence": 0.9928174018859863,
+        "margin": 0.2831347584724426,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": true
+    },
+    {
+      "case_index": 4,
+      "npc_id": 0,
+      "input": "What is a zhurble tactic?",
+      "authored_expected_label": "prof_unknown",
+      "result": {
+        "label": "earth_plan",
+        "model_label": "earth_plan",
+        "scores": {
+          "earth_plan": 0.8473058938980103,
+          "safe_plan": 0.3546811640262604,
+          "rush_trial": 0.4319426119327545,
+          "type_correction": 0.466043084859848,
+          "epilogue": 0.11242328584194183,
+          "prof_unknown": 0.4624614119529724
+        },
+        "abstain_score": null,
+        "confidence": 0.8473058938980103,
+        "margin": 0.38126280903816223,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 5,
+      "npc_id": 1,
+      "input": "Trade my crystal for exactly one supply pack.",
+      "authored_expected_label": "buy_one",
+      "result": {
+        "label": "buy_one",
+        "model_label": "buy_one",
+        "scores": {
+          "buy_one": 0.9983965754508972,
+          "buy_many": 0.9621855616569519,
+          "refuse_trade": 0.004427173640578985,
+          "check_stock": 0.462854266166687,
+          "already_supplied": 0.5176350474357605,
+          "quarter_unknown": 0.8291727304458618
+        },
+        "abstain_score": null,
+        "confidence": 0.9983965754508972,
+        "margin": 0.03621101379394531,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": true
+    },
+    {
+      "case_index": 6,
+      "npc_id": 1,
+      "input": "I want two packs, not one.",
+      "authored_expected_label": "buy_many",
+      "result": {
+        "label": null,
+        "model_label": "quarter_unknown",
+        "scores": {
+          "buy_one": 0.33099985122680664,
+          "buy_many": 0.9876799583435059,
+          "refuse_trade": 0.955412745475769,
+          "check_stock": 0.11439615488052368,
+          "already_supplied": 0.24660181999206543,
+          "quarter_unknown": 0.9880765676498413
+        },
+        "abstain_score": null,
+        "confidence": 0.9880765676498413,
+        "margin": 0.0003966093063354492,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 7,
+      "npc_id": 1,
+      "input": "Do not trade. I want to keep the crystal.",
+      "authored_expected_label": "refuse_trade",
+      "result": {
+        "label": null,
+        "model_label": "refuse_trade",
+        "scores": {
+          "buy_one": 0.2512625753879547,
+          "buy_many": 0.8828576803207397,
+          "refuse_trade": 0.9978965520858765,
+          "check_stock": 0.14348308742046356,
+          "already_supplied": 0.2097882330417633,
+          "quarter_unknown": 0.9757073521614075
+        },
+        "abstain_score": null,
+        "confidence": 0.9978965520858765,
+        "margin": 0.022189199924468994,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 8,
+      "npc_id": 1,
+      "input": "I already received a pack; is there another?",
+      "authored_expected_label": "already_supplied",
+      "result": {
+        "label": "buy_many",
+        "model_label": "buy_many",
+        "scores": {
+          "buy_one": 0.03979295492172241,
+          "buy_many": 0.9400288462638855,
+          "refuse_trade": 0.031440988183021545,
+          "check_stock": 0.6909680962562561,
+          "already_supplied": 0.698074996471405,
+          "quarter_unknown": 0.8545445799827576
+        },
+        "abstain_score": null,
+        "confidence": 0.9400288462638855,
+        "margin": 0.08548426628112793,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 9,
+      "npc_id": 1,
+      "input": "What is the price of a flarn parcel?",
+      "authored_expected_label": "quarter_unknown",
+      "result": {
+        "label": null,
+        "model_label": "quarter_unknown",
+        "scores": {
+          "buy_one": 0.21747945249080658,
+          "buy_many": 0.8226137757301331,
+          "refuse_trade": 0.5773763656616211,
+          "check_stock": 0.45352837443351746,
+          "already_supplied": 0.3299979567527771,
+          "quarter_unknown": 0.848659336566925
+        },
+        "abstain_score": null,
+        "confidence": 0.848659336566925,
+        "margin": 0.026045560836791992,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 10,
+      "npc_id": 2,
+      "input": "Her tag says Lumi, not Luma. Fix the spelling.",
+      "authored_expected_label": "correct_name",
+      "result": {
+        "label": "unknown_name",
+        "model_label": "unknown_name",
+        "scores": {
+          "correct_name": 0.36587199568748474,
+          "follow_clue": 0.861412763595581,
+          "unknown_name": 0.9502044320106506,
+          "leave_creature": 0.49967941641807556,
+          "safe_route": 0.5938543081283569,
+          "tracker_unknown": 0.8586034178733826
+        },
+        "abstain_score": null,
+        "confidence": 0.9502044320106506,
+        "margin": 0.08879166841506958,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 11,
+      "npc_id": 2,
+      "input": "Where did that tagged creature go?",
+      "authored_expected_label": "follow_clue",
+      "result": {
+        "label": "follow_clue",
+        "model_label": "follow_clue",
+        "scores": {
+          "correct_name": 0.5594456791877747,
+          "follow_clue": 0.9871952533721924,
+          "unknown_name": 0.41042447090148926,
+          "leave_creature": 0.1472395807504654,
+          "safe_route": 0.5551207065582275,
+          "tracker_unknown": 0.9354506731033325
+        },
+        "abstain_score": null,
+        "confidence": 0.9871952533721924,
+        "margin": 0.05174458026885986,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": true
+    },
+    {
+      "case_index": 12,
+      "npc_id": 2,
+      "input": "Does Vorpax live here?",
+      "authored_expected_label": "unknown_name",
+      "result": {
+        "label": null,
+        "model_label": "tracker_unknown",
+        "scores": {
+          "correct_name": 0.36689937114715576,
+          "follow_clue": 0.9557713270187378,
+          "unknown_name": 0.5731055736541748,
+          "leave_creature": 0.31640714406967163,
+          "safe_route": 0.5580429434776306,
+          "tracker_unknown": 0.9580111503601074
+        },
+        "abstain_score": null,
+        "confidence": 0.9580111503601074,
+        "margin": 0.002239823341369629,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 13,
+      "npc_id": 2,
+      "input": "Do not chase Lumi. Leave it alone.",
+      "authored_expected_label": "leave_creature",
+      "result": {
+        "label": null,
+        "model_label": "tracker_unknown",
+        "scores": {
+          "correct_name": 0.06903594732284546,
+          "follow_clue": 0.9662438035011292,
+          "unknown_name": 0.9702425003051758,
+          "leave_creature": 0.9561554193496704,
+          "safe_route": 0.7290018200874329,
+          "tracker_unknown": 0.9821725487709045
+        },
+        "abstain_score": null,
+        "confidence": 0.9821725487709045,
+        "margin": 0.01193004846572876,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 14,
+      "npc_id": 2,
+      "input": "I checked the clue. Mark the dry route.",
+      "authored_expected_label": "safe_route",
+      "result": {
+        "label": null,
+        "model_label": "safe_route",
+        "scores": {
+          "correct_name": 0.9676076769828796,
+          "follow_clue": 0.9629075527191162,
+          "unknown_name": 0.2853476405143738,
+          "leave_creature": 0.04271398112177849,
+          "safe_route": 0.9801990389823914,
+          "tracker_unknown": 0.024012545123696327
+        },
+        "abstain_score": null,
+        "confidence": 0.9801990389823914,
+        "margin": 0.012591361999511719,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 15,
+      "npc_id": 3,
+      "input": "Use my aid kit and escort the scout to camp.",
+      "authored_expected_label": "rescue_scout",
+      "result": {
+        "label": "rescue_scout",
+        "model_label": "rescue_scout",
+        "scores": {
+          "rescue_scout": 0.9965671300888062,
+          "prioritize_trial": 0.8035106062889099,
+          "help_companion": 0.4008280038833618,
+          "refuse_kit": 6.521409522974864e-05,
+          "rescue_status": 0.3943497836589813,
+          "medic_unknown": 0.22714459896087646
+        },
+        "abstain_score": null,
+        "confidence": 0.9965671300888062,
+        "margin": 0.19305652379989624,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": true
+    },
+    {
+      "case_index": 16,
+      "npc_id": 3,
+      "input": "Ignore the scout; the trial comes first.",
+      "authored_expected_label": "prioritize_trial",
+      "result": {
+        "label": null,
+        "model_label": "refuse_kit",
+        "scores": {
+          "rescue_scout": 0.3078869581222534,
+          "prioritize_trial": 0.9691205024719238,
+          "help_companion": 0.9164263010025024,
+          "refuse_kit": 0.9838146567344666,
+          "rescue_status": 0.7614229321479797,
+          "medic_unknown": 0.8903520107269287
+        },
+        "abstain_score": null,
+        "confidence": 0.9838146567344666,
+        "margin": 0.014694154262542725,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 17,
+      "npc_id": 3,
+      "input": "Can I help my companion and the scout both?",
+      "authored_expected_label": "help_companion",
+      "result": {
+        "label": null,
+        "model_label": "help_companion",
+        "scores": {
+          "rescue_scout": 0.6383388042449951,
+          "prioritize_trial": 0.607599675655365,
+          "help_companion": 0.828364908695221,
+          "refuse_kit": 0.0185332503169775,
+          "rescue_status": 0.6134425401687622,
+          "medic_unknown": 0.8276548385620117
+        },
+        "abstain_score": null,
+        "confidence": 0.828364908695221,
+        "margin": 0.0007100701332092285,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 18,
+      "npc_id": 3,
+      "input": "Do not use the kit. I am not ready to escort.",
+      "authored_expected_label": "refuse_kit",
+      "result": {
+        "label": null,
+        "model_label": "refuse_kit",
+        "scores": {
+          "rescue_scout": 0.004614948760718107,
+          "prioritize_trial": 0.2077123522758484,
+          "help_companion": 0.42145389318466187,
+          "refuse_kit": 0.9976752400398254,
+          "rescue_status": 0.7754381895065308,
+          "medic_unknown": 0.9740558862686157
+        },
+        "abstain_score": null,
+        "confidence": 0.9976752400398254,
+        "margin": 0.023619353771209717,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 19,
+      "npc_id": 3,
+      "input": "Help them with that thing.",
+      "authored_expected_label": "medic_unknown",
+      "result": {
+        "label": null,
+        "model_label": "prioritize_trial",
+        "scores": {
+          "rescue_scout": 0.8673834204673767,
+          "prioritize_trial": 0.8832607269287109,
+          "help_companion": 0.7680937051773071,
+          "refuse_kit": 0.0005800966755487025,
+          "rescue_status": 0.3974074423313141,
+          "medic_unknown": 0.3510652184486389
+        },
+        "abstain_score": null,
+        "confidence": 0.8832607269287109,
+        "margin": 0.01587730646133423,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 20,
+      "npc_id": 4,
+      "input": "I accept the risk. Open the flooded shortcut.",
+      "authored_expected_label": "take_shortcut",
+      "result": {
+        "label": "take_shortcut",
+        "model_label": "take_shortcut",
+        "scores": {
+          "take_shortcut": 0.9924311637878418,
+          "refuse_shortcut": 0.020956236869096756,
+          "get_permit": 0.6240496039390564,
+          "gate_status": 0.9500938057899475,
+          "permit_again": 0.09542155265808105,
+          "warden_unknown": 0.07148808985948563
+        },
+        "abstain_score": null,
+        "confidence": 0.9924311637878418,
+        "margin": 0.04233735799789429,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": true
+    },
+    {
+      "case_index": 21,
+      "npc_id": 4,
+      "input": "Do not open that shortcut. I refuse the risk.",
+      "authored_expected_label": "refuse_shortcut",
+      "result": {
+        "label": null,
+        "model_label": "gate_status",
+        "scores": {
+          "take_shortcut": 0.5676989555358887,
+          "refuse_shortcut": 0.955467939376831,
+          "get_permit": 0.48554113507270813,
+          "gate_status": 0.98159259557724,
+          "permit_again": 0.4879125952720642,
+          "warden_unknown": 0.9647032618522644
+        },
+        "abstain_score": null,
+        "confidence": 0.98159259557724,
+        "margin": 0.016889333724975586,
+        "abstained": true,
+        "reason": "ambiguous",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 22,
+      "npc_id": 4,
+      "input": "I have the route report. Issue my permit.",
+      "authored_expected_label": "get_permit",
+      "result": {
+        "label": "gate_status",
+        "model_label": "gate_status",
+        "scores": {
+          "take_shortcut": 0.3573148846626282,
+          "refuse_shortcut": 0.24587558209896088,
+          "get_permit": 0.7917888164520264,
+          "gate_status": 0.9622932076454163,
+          "permit_again": 0.3380317986011505,
+          "warden_unknown": 0.46302932500839233
+        },
+        "abstain_score": null,
+        "confidence": 0.9622932076454163,
+        "margin": 0.1705043911933899,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 23,
+      "npc_id": 4,
+      "input": "I already have a valid permit. Need another?",
+      "authored_expected_label": "permit_again",
+      "result": {
+        "label": "gate_status",
+        "model_label": "gate_status",
+        "scores": {
+          "take_shortcut": 0.1381193846464157,
+          "refuse_shortcut": 0.02169998548924923,
+          "get_permit": 0.46824902296066284,
+          "gate_status": 0.9136183261871338,
+          "permit_again": 0.8429591059684753,
+          "warden_unknown": 0.21398937702178955
+        },
+        "abstain_score": null,
+        "confidence": 0.9136183261871338,
+        "margin": 0.07065922021865845,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    },
+    {
+      "case_index": 24,
+      "npc_id": 4,
+      "input": "Open that other thing.",
+      "authored_expected_label": "warden_unknown",
+      "result": {
+        "label": "gate_status",
+        "model_label": "gate_status",
+        "scores": {
+          "take_shortcut": 0.5434276461601257,
+          "refuse_shortcut": 0.2894917130470276,
+          "get_permit": 0.6395694613456726,
+          "gate_status": 0.9630784392356873,
+          "permit_again": 0.3013920187950134,
+          "warden_unknown": 0.7361108660697937
+        },
+        "abstain_score": null,
+        "confidence": 0.9630784392356873,
+        "margin": 0.22696757316589355,
+        "abstained": false,
+        "reason": "selected",
+        "model_id": "knowledgator/gliclass-edge-v3.0",
+        "model_revision": "df03993a2ed98e5e4a0d2dd7efbbd105abe874cf"
+      },
+      "exact_expected_match": false
+    }
+  ],
+  "exact_matches": 6,
+  "total": 25,
+  "scores_are_calibrated": false
+}

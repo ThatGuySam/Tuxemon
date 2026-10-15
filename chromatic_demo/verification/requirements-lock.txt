@@ -1,0 +1,30 @@
+cffi==2.1.1
+    # via cryptography
+cryptography==50.0.1
+    # via pyjwt
+iniconfig==2.3.0
+    # via pytest
+numpy==2.5.3
+    # via pyboy
+packaging==26.3
+    # via pytest
+pillow==12.3.0
+    # via -r /private/tmp/tuxemon-prototype-01a10d49/verification/requirements-allowed.in
+pluggy==1.6.0
+    # via pytest
+pyboy==2.7.0
+    # via -r /private/tmp/tuxemon-prototype-01a10d49/verification/requirements-allowed.in
+pycparser==3.0
+    # via cffi
+pygments==2.21.0
+    # via pytest
+pyjwt==2.15.0
+    # via -r /private/tmp/tuxemon-prototype-01a10d49/verification/requirements-allowed.in
+pysdl2==0.9.17
+    # via pyboy
+pysdl2-dll==2.32.10
+    # via pyboy
+pytest==9.1.1
+    # via -r /private/tmp/tuxemon-prototype-01a10d49/verification/requirements-allowed.in
+ruff==0.16.9
+    # via -r /private/tmp/tuxemon-prototype-01a10d49/verification/requirements-allowed.in

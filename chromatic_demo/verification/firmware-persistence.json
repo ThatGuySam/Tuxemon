@@ -1,0 +1,42 @@
+{
+  "source_hashes_match_reviewed_receipt": true,
+  "hardware_installed": false,
+  "artifacts": [
+    {
+      "profile": "disabled",
+      "artifact": "/Users/athena/Code/Tuxemon/build/chromatic/firmware/relocated/disabled/mcu_fw.bin",
+      "sha256": "82cf49b1fe07fe483422e3d68dcd147e738ef9442606e5e87acc512fc14519cd",
+      "size_bytes": 781200
+    },
+    {
+      "profile": "disabled",
+      "artifact": "/Users/athena/Code/Tuxemon/build/chromatic/firmware/relocated/disabled/bootloader.bin",
+      "sha256": "ee0b94eec93b6d0ae6065564c61469fc696e6050ee0ac23016b954f00d54a9a1",
+      "size_bytes": 26752
+    },
+    {
+      "profile": "disabled",
+      "artifact": "/Users/athena/Code/Tuxemon/build/chromatic/firmware/relocated/disabled/partition-table.bin",
+      "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+      "size_bytes": 3072
+    },
+    {
+      "profile": "experimental",
+      "artifact": "/Users/athena/Code/Tuxemon/build/chromatic/firmware/relocated/experimental/mcu_fw.bin",
+      "sha256": "31269bc75147e3ea3e8e499b06dbbce0605aeeca2cae524b709ab6f7e299af5e",
+      "size_bytes": 1321632
+    },
+    {
+      "profile": "experimental",
+      "artifact": "/Users/athena/Code/Tuxemon/build/chromatic/firmware/relocated/experimental/bootloader.bin",
+      "sha256": "35af0d443d2be62a3caeb0bf350948763231f8c6df6bef19c6c04b85fe3b77bb",
+      "size_bytes": 26752
+    },
+    {
+      "profile": "experimental",
+      "artifact": "/Users/athena/Code/Tuxemon/build/chromatic/firmware/relocated/experimental/partition-table.bin",
+      "sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81",
+      "size_bytes": 3072
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+[
+  {
+    "frame": 0,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 10
+  },
+  {
+    "frame": 1,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 10
+  },
+  {
+    "frame": 2,
+    "terrain_tiles": 236,
+    "dark_pixels": 3608,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 3,
+    "terrain_tiles": 165,
+    "dark_pixels": 2307,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 4,
+    "terrain_tiles": 104,
+    "dark_pixels": 1937,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 5,
+    "terrain_tiles": 38,
+    "dark_pixels": 1578,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 6,
+    "terrain_tiles": 0,
+    "dark_pixels": 202,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 7,
+    "terrain_tiles": 20,
+    "dark_pixels": 0,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 8,
+    "terrain_tiles": 80,
+    "dark_pixels": 1279,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 9,
+    "terrain_tiles": 140,
+    "dark_pixels": 1595,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 10,
+    "terrain_tiles": 206,
+    "dark_pixels": 1791,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 11,
+    "terrain_tiles": 275,
+    "dark_pixels": 2031,
+    "lcdc": 193,
+    "sprite_enabled": false,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 12,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 13,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 14,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 15,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 16,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 17,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 18,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 19,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 20,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 21,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 22,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 23,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  },
+  {
+    "frame": 24,
+    "terrain_tiles": 264,
+    "dark_pixels": 3632,
+    "lcdc": 195,
+    "sprite_enabled": true,
+    "x": 10,
+    "y": 11
+  }
+]

@@ -1,0 +1,130 @@
+{
+  "recordedAtUTC": "2026-10-05 19:05:32 UTC",
+  "sourceRepository": "https://github.com/ModRetro/oss-chromatic-console-mcu",
+  "sourceCommit": "e03a6baeec49cceda38057d5aed4ae006624c698",
+  "idfRepository": "https://github.com/espressif/esp-idf",
+  "idfTag": "v5.3",
+  "idfCommit": "e0991facf5ecb362af6aac1fae972139eb38d2e4",
+  "pythonVersion": "Python 3.13.12",
+  "pythonReleaseAgeCutoff": "2026-09-28T00:00:00Z",
+  "compiler": "xtensa-esp-elf-gcc (crosstool-NG esp-13.2.0_20240530) 13.2.0",
+  "patchSha256": "8baec7f2e1f7cc4ef628c7181712fce68cbee1ef79293cfcedbccafc2065ba58",
+  "sourceFiles": {
+    "main/main.c": {
+      "sizeBytes": 12850,
+      "sha256": "93770d3fc3e3d264429f1165d57a95b04cdc1244f313ac00d962fd2228ae029e"
+    },
+    "main/gfx.c": {
+      "sizeBytes": 1123,
+      "sha256": "259bbc57cb93f01174efd18d1443f4a7c591c04bf4beef3643f31bc781eece0e"
+    },
+    "main/pwrmgr.c": {
+      "sizeBytes": 4240,
+      "sha256": "b97deb80720c385d524f3db741579e7aa2a6591a58b7760b7fe8f3900bcd82b3"
+    },
+    "main/pwrmgr.h": {
+      "sizeBytes": 204,
+      "sha256": "531e7296ad948e253c479103f0124ffff540a438dd7f5209517353842f5e111b"
+    },
+    "main/CMakeLists.txt": {
+      "sizeBytes": 518,
+      "sha256": "18a858f52e7a73cc924dea8d70dfd8d3158e581706efb2cdf2d3b8f1ab9a45fe"
+    },
+    "main/Kconfig.projbuild": {
+      "sizeBytes": 596,
+      "sha256": "e55d13d04d9a6ca2aca5d493ced504ca997b81e8fbe8b1a16717625ea05ec95d"
+    },
+    "main/connected_demo.c": {
+      "sizeBytes": 20856,
+      "sha256": "332473b23b4290bbb1a417414d2dffa3b9d9da6dc53568826eb73d6819537676"
+    },
+    "main/connected_demo.h": {
+      "sizeBytes": 178,
+      "sha256": "bb0aabf881bfe76b51af99e73f382f549d0a1a3ad2025e576fb26ccba966d503"
+    },
+    "sdkconfig.demo.defaults": {
+      "sizeBytes": 68,
+      "sha256": "7195703be8581a130b34853bae53d88387eb58f4fe5b302d042e9d364d5c330f"
+    },
+    "sdkconfig.experimental.defaults": {
+      "sizeBytes": 200,
+      "sha256": "ae06d72222e7544fc41544c9a7991e4989bc5a459fbd38c93f40105634a06598"
+    },
+    "partitions.connected-demo.csv": {
+      "sizeBytes": 383,
+      "sha256": "8b4e45c932918f4f9679f02f57406d0834d215a8a87e84eb3a88177a90cb416b"
+    }
+  },
+  "experimentalCertificateDateCheckCompiled": true,
+  "builds": {
+    "stock-baseline": {
+      "mcu_fw.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/stock-baseline/mcu_fw.bin",
+        "sizeBytes": 783552,
+        "sha256": "d1226dca49e22d9275e62ce3d66a7740adca0a01a77161b1124e156b84f5283c"
+      },
+      "bootloader/bootloader.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/stock-baseline/bootloader.bin",
+        "sizeBytes": 26960,
+        "sha256": "70787ef252defe93da6b87fd2c084c8658569018deebd0ee07b2d8464f5fd599"
+      },
+      "partition_table/partition-table.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/stock-baseline/partition-table.bin",
+        "sizeBytes": 3072,
+        "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820"
+      },
+      "mcu_fw.map": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/stock-baseline/mcu_fw.map",
+        "sizeBytes": 4351814,
+        "sha256": "4e2853f447ba39fc46df5be6d00783bd5cbe5e549dea9fb2d40fc0cd6272c874"
+      }
+    },
+    "default-disabled": {
+      "mcu_fw.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/default-disabled/mcu_fw.bin",
+        "sizeBytes": 783552,
+        "sha256": "de69e03342625671448499ba7eb24b732282c409d1b053c60cb09a5599603e24"
+      },
+      "bootloader/bootloader.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/default-disabled/bootloader.bin",
+        "sizeBytes": 26960,
+        "sha256": "99251438c4a8a8f23747b0487b15424f73bc9455832ceff47096654ee517e160"
+      },
+      "partition_table/partition-table.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/default-disabled/partition-table.bin",
+        "sizeBytes": 3072,
+        "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820"
+      },
+      "mcu_fw.map": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/default-disabled/mcu_fw.map",
+        "sizeBytes": 4351814,
+        "sha256": "c3d06cbe3072e1e8f325f2ac3e64ff56bb4d34a101a949c3a0feaafeeeff43e8"
+      }
+    },
+    "experimental-not-approved-for-installation": {
+      "mcu_fw.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/experimental-not-approved-for-installation/mcu_fw.bin",
+        "sizeBytes": 1325184,
+        "sha256": "64ff5e4d0f7b16020a7706220abfff616a42686edc3b167605190d96042a82c6"
+      },
+      "bootloader/bootloader.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/experimental-not-approved-for-installation/bootloader.bin",
+        "sizeBytes": 26960,
+        "sha256": "3eb689dce0310a632b40718b5ef28818f58f00318a5ee8621413069de1ddc36f"
+      },
+      "partition_table/partition-table.bin": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/experimental-not-approved-for-installation/partition-table.bin",
+        "sizeBytes": 3072,
+        "sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+      },
+      "mcu_fw.map": {
+        "path": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/experimental-not-approved-for-installation/mcu_fw.map",
+        "sizeBytes": 8890711,
+        "sha256": "1044492dd464c2f80522ce7031440e7387a45a7e22b92845ba87e4644796172d"
+      }
+    }
+  },
+  "hardwareAccessPerformed": false,
+  "installationApproved": false,
+  "verificationBoundary": "Source compile/link/partition size checks only; RF, volatile provisioning, TLS/date checks/display/pagination/buttons/power behavior on hardware remain unverified. Enabled firmware stays awake; normal sleep is deferred."
+}

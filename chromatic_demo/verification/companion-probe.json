@@ -1,0 +1,21 @@
+{
+  "request_started_at_utc": "2026-10-05T18:48:09.351723+00:00",
+  "bind": "127.0.0.1",
+  "path": "/v1/dialogue",
+  "request": {
+    "request_id": "cf51b1da-58c0-44f8-834d-280d5278ae7b",
+    "intent": "rockitten"
+  },
+  "credentials_logged": false,
+  "hardware_connected": false,
+  "status": 200,
+  "response": {
+    "request_id": "cf51b1da-58c0-44f8-834d-280d5278ae7b",
+    "text": "A superb choice! Rockitten is an earth Tuxemon.",
+    "provider": "ollama",
+    "source": "ollama",
+    "fallback": false,
+    "reason": null
+  },
+  "completed_at_utc": "2026-10-05T18:48:14.329861+00:00"
+}

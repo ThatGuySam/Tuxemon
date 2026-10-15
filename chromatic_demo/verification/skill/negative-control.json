@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/athena/Code/Tuxemon/venv/chromatic/bin/python",
+    "/Users/athena/Code/Tuxemon/tests/chromatic_demo/verify_screen_frames.py",
+    "/Users/athena/Code/Tuxemon/build/chromatic/playground-before-ui-fix",
+    "--smoke",
+    "--output-dir",
+    "/Users/athena/Code/Tuxemon/build/chromatic/verification/393931c9-b954-4995-a824-64009b9691d2/negative-control"
+  ],
+  "rom_sha256": "b9b54bf6d16cfbaf562b8ed1d0f65a085d7e22e7788697c844d0d6005df6bc93",
+  "exit_code": 1,
+  "known_blink_detected": true
+}

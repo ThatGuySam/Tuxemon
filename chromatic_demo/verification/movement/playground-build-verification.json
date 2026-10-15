@@ -1,0 +1,53 @@
+{
+  "verified_actual_layout": [
+    {
+      "name": "DATA",
+      "start": 49312,
+      "length": 289,
+      "origin": "NOI"
+    },
+    {
+      "name": "INITIALIZED",
+      "start": 49601,
+      "length": 6,
+      "origin": "NOI"
+    },
+    {
+      "name": "_DATA",
+      "start": 49312,
+      "length": 289,
+      "origin": "MAP"
+    },
+    {
+      "name": "_INITIALIZED",
+      "start": 49601,
+      "length": 6,
+      "origin": "MAP"
+    }
+  ],
+  "rejected_regressions": [
+    "invalid flag True",
+    "invalid flag '1'",
+    "invalid flag 1.5",
+    "invalid flag -1",
+    "invalid flag 256",
+    "invalid give_item",
+    "invalid spend_item",
+    "invalid requires_items",
+    "invalid initial area4",
+    "invalid initial x20",
+    "invalid initial y14",
+    "invalid initial xTrue",
+    "spawn in wall",
+    "spawn inside NPC",
+    "exit invalid destination area",
+    "exit destination wall",
+    "exit source inside companion",
+    "exit bool mask",
+    "NOI DATA overflow",
+    "MAP section overflow",
+    "absolute symbol collision",
+    "wrong mailbox extent"
+  ],
+  "fixtures": "Invalid copies and forged linker additions are explicit negative-test fixtures, not build measurements."
+}

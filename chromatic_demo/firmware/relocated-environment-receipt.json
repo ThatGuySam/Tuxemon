@@ -1,0 +1,77 @@
+{
+  "recordedAtUTC": "2026-10-05 19:16:54 UTC",
+  "sourceRoot": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source",
+  "toolsRoot": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/tools",
+  "idfPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/tools/esp-idf",
+  "idfVersion": "v5.3",
+  "idfCommit": "e0991facf5ecb362af6aac1fae972139eb38d2e4",
+  "pythonEnvironment": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/tools/venv",
+  "pythonVersion": "Python 3.13.12",
+  "pythonReleaseAgeCutoff": "2026-09-28T00:00:00Z",
+  "pythonPackageVersionsMatchOriginal": true,
+  "sdkConfigsMatchOriginal": true,
+  "sourceHashesMatchReviewedReceipt": true,
+  "sourceHashes": {
+    "main/main.c": "93770d3fc3e3d264429f1165d57a95b04cdc1244f313ac00d962fd2228ae029e",
+    "main/gfx.c": "259bbc57cb93f01174efd18d1443f4a7c591c04bf4beef3643f31bc781eece0e",
+    "main/pwrmgr.c": "b97deb80720c385d524f3db741579e7aa2a6591a58b7760b7fe8f3900bcd82b3",
+    "main/pwrmgr.h": "531e7296ad948e253c479103f0124ffff540a438dd7f5209517353842f5e111b",
+    "main/CMakeLists.txt": "18a858f52e7a73cc924dea8d70dfd8d3158e581706efb2cdf2d3b8f1ab9a45fe",
+    "main/Kconfig.projbuild": "e55d13d04d9a6ca2aca5d493ced504ca997b81e8fbe8b1a16717625ea05ec95d",
+    "main/connected_demo.c": "332473b23b4290bbb1a417414d2dffa3b9d9da6dc53568826eb73d6819537676",
+    "main/connected_demo.h": "bb0aabf881bfe76b51af99e73f382f549d0a1a3ad2025e576fb26ccba966d503",
+    "sdkconfig.demo.defaults": "7195703be8581a130b34853bae53d88387eb58f4fe5b302d042e9d364d5c330f",
+    "sdkconfig.experimental.defaults": "ae06d72222e7544fc41544c9a7991e4989bc5a459fbd38c93f40105634a06598",
+    "partitions.connected-demo.csv": "8b4e45c932918f4f9679f02f57406d0834d215a8a87e84eb3a88177a90cb416b"
+  },
+  "patchSha256": "8baec7f2e1f7cc4ef628c7181712fce68cbee1ef79293cfcedbccafc2065ba58",
+  "experimentalCertificateDateCheckCompiled": true,
+  "toolChecks": "ESP-IDF v5.3 version, Python dependencies, and selected ESP32 installed tools passed; both clean build partition guards passed.",
+  "builds": {
+    "disabled": {
+      "mcu_fw.bin": {
+        "builtPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source/build-relocated-disabled/mcu_fw.bin",
+        "copiedPath": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/relocated/disabled/mcu_fw.bin",
+        "sizeBytes": 781200,
+        "sha256": "82cf49b1fe07fe483422e3d68dcd147e738ef9442606e5e87acc512fc14519cd"
+      },
+      "bootloader/bootloader.bin": {
+        "builtPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source/build-relocated-disabled/bootloader/bootloader.bin",
+        "copiedPath": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/relocated/disabled/bootloader.bin",
+        "sizeBytes": 26752,
+        "sha256": "ee0b94eec93b6d0ae6065564c61469fc696e6050ee0ac23016b954f00d54a9a1"
+      },
+      "partition_table/partition-table.bin": {
+        "builtPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source/build-relocated-disabled/partition_table/partition-table.bin",
+        "copiedPath": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/relocated/disabled/partition-table.bin",
+        "sizeBytes": 3072,
+        "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820"
+      }
+    },
+    "experimental": {
+      "mcu_fw.bin": {
+        "builtPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source/build-relocated-experimental/mcu_fw.bin",
+        "copiedPath": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/relocated/experimental/mcu_fw.bin",
+        "sizeBytes": 1321632,
+        "sha256": "31269bc75147e3ea3e8e499b06dbbce0605aeeca2cae524b709ab6f7e299af5e"
+      },
+      "bootloader/bootloader.bin": {
+        "builtPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source/build-relocated-experimental/bootloader/bootloader.bin",
+        "copiedPath": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/relocated/experimental/bootloader.bin",
+        "sizeBytes": 26752,
+        "sha256": "35af0d443d2be62a3caeb0bf350948763231f8c6df6bef19c6c04b85fe3b77bb"
+      },
+      "partition_table/partition-table.bin": {
+        "builtPath": "/Users/athena/Code/Tuxemon/venv/chromatic-firmware/source/build-relocated-experimental/partition_table/partition-table.bin",
+        "copiedPath": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/relocated/experimental/partition-table.bin",
+        "sizeBytes": 3072,
+        "sha256": "5e71c3c890e04714daa03b21a0d23953a2dadf9fdf15eec02b886f7b6e9f8c81"
+      }
+    }
+  },
+  "originalBuildReceiptRetained": "/private/tmp/tuxemon-firmware-artifacts-01a10d49/build-receipt.json",
+  "historicalBuildPaths": "Original /tmp CMake directories are retained only as evidence; use new build-relocated-* directories.",
+  "binaryPathNormalization": "Historical disabled image has 75 IDF pathname strings totaling5775 chars; relocated image has matching75 normalized /IDF pathname strings totaling3450 chars. Source/config unchanged; binary timestamps/paths differ.",
+  "hardwareAccessPerformed": false,
+  "installationApproved": false
+}
