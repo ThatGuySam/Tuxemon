@@ -190,12 +190,28 @@ class CustomConversationState(State):
                 f"Model: {model.model or 'NOT CONFIGURED'}. "
                 "Set TUXEMON_OLLAMA_URL and TUXEMON_OLLAMA_MODEL before launch. "
                 "No model fallback; no account credentials."
+                + (
+                    f" Profile {model.store.profile}. Plain-text local save: {model.store.path}. {model.store.notice}."
+                    if model.store is not None
+                    else " Session-only conversation."
+                )
             )
         rows = wrap(message)
-        model.reply_pages = max(1, (len(rows) + 3) // 4)
+        model.reply_pages = max(1, (len(rows) + 2) // 3)
         model.reply_page %= model.reply_pages
-        for row in rows[model.reply_page * 4 : model.reply_page * 4 + 4]:
+        for row in rows[model.reply_page * 3 : model.reply_page * 3 + 3]:
             line(row)
+        y = panel.y + 10 + self.line_height * 6
+        if model.store is not None:
+            line(
+                f"Profile {model.store.profile} | {model.store.notice}",
+                (245, 215, 140),
+            )
+        else:
+            line(
+                "Campaign session only; custom profile is not attached",
+                (245, 215, 140),
+            )
         y = panel.y + 10 + self.line_height * 7
         line(
             f"Text page {model.reply_page + 1}/{model.reply_pages} | Left/Right scrolls replies"

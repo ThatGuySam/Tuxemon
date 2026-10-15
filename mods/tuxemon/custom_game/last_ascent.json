@@ -167,6 +167,7 @@
   ],
   "npcs": [
     {
+      "id": "professor",
       "name": "Professor",
       "area": 0,
       "x": 8,
@@ -291,6 +292,7 @@
       ]
     },
     {
+      "id": "quartermaster",
       "name": "Quartermaster",
       "area": 1,
       "x": 7,
@@ -415,6 +417,7 @@
       ]
     },
     {
+      "id": "tracker-iona",
       "name": "Tracker Iona",
       "area": 2,
       "x": 12,
@@ -539,6 +542,7 @@
       ]
     },
     {
+      "id": "medic-ren",
       "name": "Medic Ren",
       "area": 2,
       "x": 7,
@@ -663,6 +667,7 @@
       ]
     },
     {
+      "id": "warden-vale",
       "name": "Warden Vale",
       "area": 3,
       "x": 10,

@@ -144,7 +144,14 @@ def test_real_transport_two_turn_npc_chat_and_separate_quest_actions(
         app.close()
 
 
-@pytest.mark.parametrize("failure", ["error", "cancel", "empty"])
+@pytest.mark.parametrize(
+    "failure",
+    [
+        pytest.param("error", id="error"),
+        pytest.param("cancel", id="cancel"),
+        pytest.param("empty", id="empty"),
+    ],
+)
 def test_transport_failure_retains_draft_and_allows_retry(
     synthetic_ollama, failure
 ):
@@ -232,17 +239,17 @@ def test_npc_history_context_guards_and_reset():
 @pytest.mark.parametrize(
     "change",
     [
-        "cancel",
-        "error",
-        "timeout",
-        "empty",
-        "draft",
-        "npc",
-        "method",
-        "provider",
-        "model",
-        "operation",
-        "reset",
+        pytest.param("cancel", id="cancel"),
+        pytest.param("error", id="error"),
+        pytest.param("timeout", id="timeout"),
+        pytest.param("empty", id="empty"),
+        pytest.param("draft", id="draft"),
+        pytest.param("npc", id="npc"),
+        pytest.param("method", id="method"),
+        pytest.param("provider", id="provider"),
+        pytest.param("model", id="model"),
+        pytest.param("operation", id="operation"),
+        pytest.param("reset", id="reset"),
     ],
 )
 def test_failed_or_stale_reply_never_appends_history(change):

@@ -255,26 +255,47 @@ def test_screen_decoder_scroll_region():
 @pytest.mark.parametrize(
     "method,keys,expected",
     [
-        ("Keyword chips", ["a"], "ask"),
-        (
+        pytest.param("Keyword chips", ["a"], "ask", id="keyword-chips"),
+        pytest.param(
             "Intent composer",
             ["a", "a", "a"],
             "Can we discuss this: Trade for one pack?",
+            id="intent-composer",
         ),
-        (
+        pytest.param(
             "Initials shorthand",
             [],
             "Trade my crystal for exactly one supply pack.",
+            id="initials-shorthand",
         ),
-        ("Predictive grid", ["a"], "a"),
-        ("Grouped alphabet", ["a", "a"], "a"),
-        ("Custom EdgeWrite", ["up", "a"], "a"),
-        ("Dasher inspired tree", ["right", "a", "a", "a"], "h"),
-        ("Radial groups", ["right", "a", "a"], "h"),
-        ("Host keyboard", ["a", "sample", "tab"], "sample"),
+        pytest.param("Predictive grid", ["a"], "a", id="predictive-grid"),
+        pytest.param(
+            "Grouped alphabet", ["a", "a"], "a", id="grouped-alphabet"
+        ),
+        pytest.param(
+            "Custom EdgeWrite", ["up", "a"], "a", id="custom-edgewrite"
+        ),
+        pytest.param(
+            "Dasher inspired tree",
+            ["right", "a", "a", "a"],
+            "h",
+            id="dasher-inspired-tree",
+        ),
+        pytest.param(
+            "Radial groups", ["right", "a", "a"], "h", id="radial-groups"
+        ),
+        pytest.param(
+            "Host keyboard",
+            ["a", "sample", "tab"],
+            "sample",
+            id="host-keyboard",
+        ),
     ],
 )
-@pytest.mark.parametrize("activation", ["a", "enter"])
+@pytest.mark.parametrize(
+    "activation",
+    [pytest.param("a", id="a"), pytest.param("enter", id="enter")],
+)
 def test_every_method_real_input_and_preview(
     terminal, method, keys, expected, activation
 ):
@@ -484,7 +505,10 @@ def test_live_ollama_generation_and_cancel(request):
         app.close()
 
 
-@pytest.mark.parametrize("columns,rows", [(80, 24), (60, 20)])
+@pytest.mark.parametrize(
+    "columns,rows",
+    [pytest.param(80, 24, id="80x24"), pytest.param(60, 20, id="60x20")],
+)
 def test_long_text_preview_confirm_at_supported_sizes(terminal, columns, rows):
     terminal.screen.resize(lines=rows, columns=columns)
     fcntl.ioctl(

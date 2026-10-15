@@ -37,6 +37,7 @@ def main(
 
     if custom_game:
         from tuxemon.custom_game.runtime import launch
+
         launch(client)
     else:
         configure_game_states(client, config, load_slot)
@@ -44,8 +45,12 @@ def main(
     if config.collision_map:
         configure_debug_options(client)
 
-    client.main()
-    pygame.quit()
+    try:
+        client.main()
+    finally:
+        if hasattr(client, "custom_scenario"):
+            client.custom_scenario.close_persistence()
+        pygame.quit()
 
 
 def headless(config: TuxemonConfig, context: DisplayContext) -> None:

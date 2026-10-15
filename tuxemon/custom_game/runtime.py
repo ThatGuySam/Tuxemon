@@ -11,11 +11,12 @@ from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from tuxemon.custom_game.composer import Composer, load_world
+from tuxemon.custom_game.persistence import ConversationStore, NPCMemory
 from tuxemon.session import local_session
 
 
 class Ollama:
-    def __init__(self, endpoint: str, model: str, timeout: float = 15):
+    def __init__(self, endpoint: str, model: str, timeout: float = 60):
         url = urlsplit(endpoint)
         if (
             url.scheme not in ("http", "https")
@@ -38,6 +39,7 @@ class Ollama:
         payload = {
             "model": self.model,
             "stream": False,
+            "think": False,
             "messages": [
                 {
                     "role": "system",
@@ -88,6 +90,8 @@ class Scenario(Composer):
         super().__init__(load_world())
         self.client = client
         self.npc_drafts = {}
+        self.npc_methods = {}
+        self.store = getattr(client, "custom_conversation_store", None)
         self.results = queue.Queue()
         self.worker = None
         self.request = None
@@ -98,10 +102,58 @@ class Scenario(Composer):
             "Authored scenario. Configure Ollama to receive live NPC replies."
         )
 
-    def select_npc(self, index):
+        if self.store is not None:
+            memories = self.store.load()
+            for index, npc in enumerate(self.world["npcs"]):
+                memory = memories[npc["id"]]
+                self.npc_drafts[index] = memory.draft
+                self.npc_methods[index] = memory.method
+                if memory.history:
+                    self.conversations[index] = list(memory.history)
+            self.draft = self.npc_drafts[self.npc]
+            self.method = self.npc_methods[self.npc]
+
+    def persist(self):
         self.npc_drafts[self.npc] = self.draft
+        self.npc_methods[self.npc] = self.method
+        if self.store is not None:
+            self.store.save(
+                {
+                    npc["id"]: NPCMemory(
+                        self.npc_drafts.get(index, ""),
+                        self.npc_methods.get(index, 1),
+                        tuple(self.conversations.get(index, [])),
+                    )
+                    for index, npc in enumerate(self.world["npcs"])
+                }
+            )
+
+    def set_draft(self, text):
+        accepted = super().set_draft(text)
+        if accepted:
+            self.persist()
+        return accepted
+
+    def change_method(self, method):
+        super().change_method(method)
+        self.persist()
+
+    def accept_result(self, token, text=None, error=None):
+        accepted = super().accept_result(token, text=text, error=error)
+        if accepted:
+            self.persist()
+        return accepted
+
+    def close_persistence(self):
+        self.cancel()
+        if self.store is not None:
+            self.store.close()
+
+    def select_npc(self, index):
+        self.persist()
         self.change_scene(index)
-        self.set_draft(self.npc_drafts.get(index, ""))
+        super().set_draft(self.npc_drafts.get(index, ""))
+        self.method = self.npc_methods.get(index, 1)
         self.quit = False
         self.keyboard = False
         self.message = self.scene["opening"]
@@ -158,8 +210,7 @@ class Scenario(Composer):
         if self.phase == "menu":
             self.keyboard = False
 
-    def reset_story(self):
-        self.cancel()
+    def reset_quest_state(self):
         self.client.event_engine.execute_action(
             "set_variable", ["custom_ascent_flags:0"]
         )
@@ -172,15 +223,24 @@ class Scenario(Composer):
                 )
             if self.world["initial_state"]["inventory"] & bit:
                 self.client.event_engine.execute_action("add_item", [slug, 1])
+        self.sync()
+
+    def reset_story(self):
+        self.cancel()
+        self.reset_quest_state()
         self.npc_drafts.clear()
+        self.npc_methods.clear()
+        self.method = 1
         self.conversations.clear()
         self.transcript.clear()
-        self.set_draft("")
+        super().set_draft("")
         self.context_revision += 1
         self.reset_editor()
         self.phase, self.cursor = "editor", 0
         self.message = "Scenario reset. All NPC history and drafts cleared."
-        self.sync()
+        self.persist()
+        if self.store is not None and not self.store.writable:
+            self.message = "Session reset. Saved file retained because saving is disabled."
 
 
 def launch(client):
@@ -194,5 +254,12 @@ def launch(client):
     client.event_engine.execute_action(
         "teleport", ["player", "custom_last_ascent.tmx", 4, 7]
     )
+    from tuxemon.constants.paths import USER_GAME_SAVE_DIR
+
+    client.custom_conversation_store = ConversationStore(
+        USER_GAME_SAVE_DIR / "custom-last-ascent",
+        os.environ.get("TUXEMON_CUSTOM_PROFILE", "default"),
+        tuple(npc["id"] for npc in load_world()["npcs"]),
+    )
     client.custom_scenario = Scenario(client)
-    client.custom_scenario.reset_story()
+    client.custom_scenario.reset_quest_state()
