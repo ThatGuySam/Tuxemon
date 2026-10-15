@@ -17,6 +17,7 @@ from typing import (
     Generic,
     Protocol,
     TypeVar,
+    get_origin,
     runtime_checkable,
 )
 
@@ -299,11 +300,17 @@ class PluginManager:
         """
         Extract all classes from a module that match the interface.
         """
-        predicate = (
-            inspect.isclass
-            if interface is PluginObject
-            else lambda c: inspect.isclass(c) and issubclass(c, interface)
-        )
+
+        def predicate(candidate):
+            return (
+                inspect.isclass(candidate)
+                and get_origin(candidate) is None
+                and (
+                    interface is PluginObject
+                    or issubclass(candidate, interface)
+                )
+            )
+
         return inspect.getmembers(module, predicate=predicate)
 
     def _get_plugins_from_module(

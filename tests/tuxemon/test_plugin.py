@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0
 # Copyright (c) 2014-2026 William Edwards <shadowapex@gmail.com>, Benjamin Bean <superman2k5@gmail.com>
-from collections.abc import Iterable
+from abc import ABC
+from collections.abc import Callable, Iterable
 from pathlib import Path
+from types import ModuleType
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -311,3 +313,22 @@ def test_reload_preserves_modules(manager):
         manager.reload()
 
     assert manager.modules == ["pluginA", "pluginB"]
+
+
+def test_scan_classes_ignores_parameterized_callable(manager):
+    class Interface(ABC):
+        pass
+
+    class Implementation(Interface):
+        pass
+
+    module = ModuleType("plugin_with_type_alias")
+    module.Callback = Callable[[], object]
+    module.Implementation = Implementation
+
+    assert manager._scan_classes(module, Interface) == [
+        ("Implementation", Implementation)
+    ]
+    assert manager._scan_classes(module, PluginObject) == [
+        ("Implementation", Implementation)
+    ]
