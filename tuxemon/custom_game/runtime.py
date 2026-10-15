@@ -79,7 +79,6 @@ class Ollama:
             raise ValueError("Ollama response did not complete")
         if not isinstance(text, str) or not text.strip() or len(text) > 8192:
             raise ValueError("Ollama returned empty or oversized NPC text")
-        # Preserve prose rather than silently cutting the model response.
         return text.replace("\r", " ").replace("\n", " ").replace("\t", " ")
 
 
@@ -201,7 +200,6 @@ class Scenario(Composer):
         self.phase, self.cursor = "reply", 0
 
     def handle(self, action):
-        # Reset belongs to the scenario and must also reset engine items.
         if self.phase == "reset" and action == "a" and self.cursor == 1:
             self.reset_story()
             return

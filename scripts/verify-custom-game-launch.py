@@ -68,8 +68,6 @@ def finite_loop(client):
 
 def display(mode):
     context = original_display(mode)
-    # Match the real launcher's import order; finite test loop replaces only
-    # the unbounded loop. State/movement/event/render implementations are real.
     from tuxemon.client import LocalPygameClient
     from tuxemon.network.manager import NetworkManager
 

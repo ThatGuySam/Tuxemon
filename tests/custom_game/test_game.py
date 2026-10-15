@@ -195,8 +195,6 @@ class Driver:
         from tuxemon.session import local_session
 
         start = local_session.player.tile_pos
-        # Measured engine walk rate is 3.75 tiles/sec. Stop by tile transition,
-        # rather than teleporting or mutating entity position.
         pygame.event.post(
             pygame.event.Event(pygame.KEYDOWN, key=direction, unicode="")
         )
@@ -232,8 +230,6 @@ def check_movement_npc_and_all_nine_editors(game):
     game.key(pygame.K_RETURN)
     assert game.model.draft == "ask"
     game.clear()
-    # A uses the same activation handler as actual Return.
-    # process_events is a generator; materialize it through the public engine.
     list(
         game.client.event_manager.process_events(
             [PlayerInput(buttons.A, 1, 1)]
@@ -371,7 +367,6 @@ def check_http_followup_cancellation_errors_and_drafts(game):
     game.key(pygame.K_ESCAPE)
     assert model.phase == "editor" and model.pending is None
     assert model.draft == draft
-    # Closing and reopening cannot bypass the single-worker bound or lose a draft.
     game.key(pygame.K_F1)
     game.choose("Return to map")
     game.key(pygame.K_RETURN)
@@ -384,8 +379,6 @@ def check_http_followup_cancellation_errors_and_drafts(game):
         time.sleep(0.005)
     assert len(model.conversations[0]) == 2 and model.draft == draft
     game.capture("08-cancel-retains-draft")
-    # Exercise a real socket timeout in the actual game's worker, with a short
-    # deterministic deadline. The production default remains 15 seconds.
     import tuxemon.states.custom_conversation as overlay
 
     real_adapter = overlay.Ollama
@@ -417,7 +410,7 @@ def check_real_npc_memory_and_guarded_engine_items(game):
     game.choose("Return to map")
     assert game.client.current_state.name == "WorldState"
     assert game.walk(pygame.K_RIGHT, 4) == (8, 5)
-    game.key(pygame.K_UP)  # Face real blocking Quartermaster.
+    game.key(pygame.K_UP)
     game.key(pygame.K_RETURN)
     assert model.npc == 1 and model.draft == ""
     assert not model.conversations.get(1)
@@ -526,8 +519,6 @@ def check_tracker_medic_warden(game):
     flags_items = (game.model.flags, game.model.inventory)
     game.key(pygame.K_F1)
     game.choose("Return to map")
-    # Reconstruct scenario runtime through a real map interaction. Existing
-    # engine flags/items must survive, as they would after a restored save.
     del game.client.custom_scenario
     game.key(pygame.K_RETURN)
     assert (game.model.flags, game.model.inventory) == flags_items

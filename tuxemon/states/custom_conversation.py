@@ -56,7 +56,6 @@ class CustomConversationState(State):
                 pygame.K_ESCAPE: buttons.B,
             }
             if self.model.keyboard and self.model.phase == "editor":
-                # Normal Shift must type capitals, never trigger the game's B.
                 mapping.pop(pygame.K_LSHIFT, None)
                 mapping.pop(pygame.K_RSHIFT, None)
             if mapping != handler.event_map:
@@ -225,8 +224,6 @@ class CustomConversationState(State):
             ),
             (245, 215, 140),
         )
-        # repr makes spaces, quotes and punctuation reviewable without silently
-        # normalizing the outgoing message. The HTTP adapter sends draft verbatim.
         draft_rows = wrap(repr(model.draft))
         for row in draft_rows:
             line(row, (245, 215, 140))
